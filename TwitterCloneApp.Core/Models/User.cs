@@ -9,5 +9,10 @@
         public string Biography { get; set; }
         public string ProfileImg { get; set; }
         public DateTime DeletedAt { get; set; }
+        public ICollection<Tweet> Tweets { get; set; }
+        public ICollection<Like> Likes { get; set; }
+
+
+
     }
 }
