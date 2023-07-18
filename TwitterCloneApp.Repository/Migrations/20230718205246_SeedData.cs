@@ -170,30 +170,6 @@ namespace TwitterCloneApp.Repository.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "TweetTags",
-                columns: table => new
-                {
-                    TweetId = table.Column<int>(type: "int", nullable: false),
-                    TagId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TweetTags", x => new { x.TweetId, x.TagId });
-                    table.ForeignKey(
-                        name: "FK_TweetTags_Tags_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Tags",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TweetTags_Tweets_TweetId",
-                        column: x => x.TweetId,
-                        principalTable: "Tweets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.InsertData(
                 table: "Tags",
                 columns: new[] { "Id", "Name" },
@@ -252,18 +228,6 @@ namespace TwitterCloneApp.Repository.Migrations
                 columns: new[] { "ReplyId", "TweetId" },
                 values: new object[] { 3, 1 });
 
-            migrationBuilder.InsertData(
-                table: "TweetTags",
-                columns: new[] { "TagId", "TweetId" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 1 },
-                    { 1, 2 },
-                    { 1, 3 },
-                    { 2, 3 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Follows_FollowingId",
                 table: "Follows",
@@ -288,11 +252,6 @@ namespace TwitterCloneApp.Repository.Migrations
                 name: "IX_Tweets_UserId",
                 table: "Tweets",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TweetTags_TagId",
-                table: "TweetTags",
-                column: "TagId");
         }
 
         /// <inheritdoc />
@@ -309,9 +268,6 @@ namespace TwitterCloneApp.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "TagTweet");
-
-            migrationBuilder.DropTable(
-                name: "TweetTags");
 
             migrationBuilder.DropTable(
                 name: "Tags");

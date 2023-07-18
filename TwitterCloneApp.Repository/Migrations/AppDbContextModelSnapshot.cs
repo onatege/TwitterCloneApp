@@ -242,48 +242,6 @@ namespace TwitterCloneApp.Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TwitterCloneApp.Core.Models.TweetTag", b =>
-                {
-                    b.Property<int>("TweetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TweetId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("TweetTags", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TweetId = 1,
-                            TagId = 1
-                        },
-                        new
-                        {
-                            TweetId = 1,
-                            TagId = 2
-                        },
-                        new
-                        {
-                            TweetId = 2,
-                            TagId = 1
-                        },
-                        new
-                        {
-                            TweetId = 3,
-                            TagId = 1
-                        },
-                        new
-                        {
-                            TweetId = 3,
-                            TagId = 2
-                        });
-                });
-
             modelBuilder.Entity("TwitterCloneApp.Core.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -451,25 +409,6 @@ namespace TwitterCloneApp.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TwitterCloneApp.Core.Models.TweetTag", b =>
-                {
-                    b.HasOne("TwitterCloneApp.Core.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TwitterCloneApp.Core.Models.Tweet", "Tweet")
-                        .WithMany()
-                        .HasForeignKey("TweetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Tag");
-
-                    b.Navigation("Tweet");
                 });
 #pragma warning restore 612, 618
         }

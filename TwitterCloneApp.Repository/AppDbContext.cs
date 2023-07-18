@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TwitterCloneApp.Core.Models;
+using TwitterCloneApp.Repository.Seeds;
 
 namespace TwitterCloneApp.Repository
 {
@@ -19,6 +20,7 @@ namespace TwitterCloneApp.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            
             var relationships = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys());
 
