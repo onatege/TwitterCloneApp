@@ -11,6 +11,12 @@ namespace TwitterCloneApp.Repository.Configurations
 			builder.HasKey(tw => new { tw.TweetId, tw.ReplyId });
 			builder.ToTable("Replies");
 
-		}
-	}
+            /*
+            builder.HasOne(r => r.Tweet)
+                .WithMany()
+                .HasForeignKey(r => r.TweetId)
+                .OnDelete(DeleteBehavior.Restrict);
+            */
+        }
+    }
 }

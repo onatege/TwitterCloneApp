@@ -5,7 +5,7 @@
         public int FollowerId { get; set; }
         public int FollowingId { get; set; }
 
-        public virtual User Follower { get; set; }
-        public virtual User Following { get; set; }
+        public User Follower { get; set; }
+        public User Following { get; set; }
     }
 }

@@ -2,12 +2,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TwitterCloneApp.Core.Models;
 
-namespace TwitterCloneApp.Repository.Seed
+namespace TwitterCloneApp.Repository.Seeds
 {
 	public class UserSeed : IEntityTypeConfiguration<User>
 	{
-		
-
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
 			builder.HasData(
@@ -29,9 +27,6 @@ namespace TwitterCloneApp.Repository.Seed
 				Biography = "TEST1",
 				Email = "test111@gmail.com",
 				Password = "test123",
-				Followings = new List<Follow>(),
-				Followers = new List<Follow>(),
-				Likes = new List<Like>()
 
 			},
 			new User
@@ -42,9 +37,6 @@ namespace TwitterCloneApp.Repository.Seed
 				Biography = "TEST2",
 				Email = "test121@gmail.com",
 				Password = "test123",
-				Followings = new List<Follow>(),
-				Followers = new List<Follow>(),
-				Likes = new List<Like>()
 			});
 		}
 	}

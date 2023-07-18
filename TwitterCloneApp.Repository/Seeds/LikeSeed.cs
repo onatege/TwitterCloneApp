@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TwitterCloneApp.Core.Models;
 
-namespace TwitterCloneApp.Repository.Seed
+namespace TwitterCloneApp.Repository.Seeds
 {
 	public class LikeSeed : IEntityTypeConfiguration<Like>
 	{
@@ -25,7 +25,7 @@ namespace TwitterCloneApp.Repository.Seed
 			},
 			new Like
 			{
-				TweetId = 2,
+				TweetId = 3,
 				UserId = 1,
 			},
 			new Like

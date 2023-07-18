@@ -19,6 +19,13 @@ namespace TwitterCloneApp.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            var relationships = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys());
+
+            foreach (var relationship in relationships)
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
             base.OnModelCreating(modelBuilder);
         }
     }

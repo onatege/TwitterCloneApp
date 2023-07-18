@@ -15,18 +15,6 @@ namespace TwitterCloneApp.Repository.Configurations
 			builder.Property(x => x.Password).IsRequired().HasMaxLength(20);
 			builder.Property(x => x.Biography).HasMaxLength(30);
 			builder.ToTable("Users");
-
-			builder.HasMany(x => x.Tweets)
-			.WithOne(x => x.User).HasForeignKey(x => x.UserId);
-			builder.HasMany(x => x.Likes).WithOne(x => x.User).HasForeignKey(x => x.UserId);
-			builder.HasMany(u => u.Followers)
-			.WithOne(x => x.Follower)
-			.HasForeignKey(x => x.FollowerId);
-			builder.HasMany(u => u.Followings)
-			.WithOne(f => f.Following)
-			.HasForeignKey(f => f.FollowingId);
-
-
 		}
 	}
 }
