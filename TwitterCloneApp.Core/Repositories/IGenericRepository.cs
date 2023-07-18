@@ -11,6 +11,7 @@ namespace TwitterCloneApp.Core.Repositories
         Task AddAsync(T entity);
         Task AddRangeAsync (IEnumerable<T> entities);
         void Update(T entity);
+        Task SoftDeleteAsync(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
     }

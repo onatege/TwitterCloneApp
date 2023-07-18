@@ -11,7 +11,8 @@ namespace TwitterCloneApp.Core.Services
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
-        Task RemoveAsync(T entity);
+        Task SoftDeleteAsync(T entity);
+        Task Remove(T entity);
         Task RemoveRange(IEnumerable<T> entities);
     }
 }
