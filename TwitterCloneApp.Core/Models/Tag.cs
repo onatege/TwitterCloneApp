@@ -1,4 +1,4 @@
-﻿using TwitterCloneApp.Core.Abstracts;
+﻿using TwitterCloneApp.Core.Interfaces;
 
 namespace TwitterCloneApp.Core.Models
 {

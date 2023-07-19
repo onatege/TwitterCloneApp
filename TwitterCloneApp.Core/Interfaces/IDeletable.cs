@@ -1,6 +1,6 @@
-﻿namespace TwitterCloneApp.Core.Abstracts
+﻿namespace TwitterCloneApp.Core.Interfaces
 {
-	public interface IDeletable
+    public interface IDeletable
     {
         bool IsDeleted { get; set; }
         DateTime? DeletedAt { get; set; }

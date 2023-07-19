@@ -1,4 +1,4 @@
-﻿using TwitterCloneApp.Core.Abstracts;
+﻿using TwitterCloneApp.Core.Interfaces;
 
 namespace TwitterCloneApp.Core.Models
 {
@@ -15,5 +15,9 @@ namespace TwitterCloneApp.Core.Models
         public DateTime? DeletedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? CreatedAt { get; set; }
+        public virtual ICollection<Tweet>? Tweets { get; }
+        public virtual ICollection<Like>? Likes { get; set; }
+        public virtual ICollection<User>? Followers { get; set; }
+        public virtual ICollection<User>? Following { get; set; }
     }
 }

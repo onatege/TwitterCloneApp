@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TwitterCloneApp.Core.Abstracts;
+using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
 
 namespace TwitterCloneApp.Repository.Infrastructures

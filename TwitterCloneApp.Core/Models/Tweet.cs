@@ -1,4 +1,4 @@
-﻿using TwitterCloneApp.Core.Abstracts;
+﻿using TwitterCloneApp.Core.Interfaces;
 
 namespace TwitterCloneApp.Core.Models
 {
@@ -14,5 +14,7 @@ namespace TwitterCloneApp.Core.Models
 		public DateTime? UpdatedAt { get; set; }
 		public DateTime? CreatedAt { get; set; }
         public ICollection<Tag>? Tags { get; set; } // Many-to-Many ilişkisi için koleksiyon
+		public ICollection<Tweet>? Replies { get; set; }
+		public ICollection<Like>? Likes { get; set; }
     }
 }
