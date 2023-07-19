@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.Core.Repositories;
 
-namespace TwitterCloneApp.Repository.Repositories
+namespace TwitterCloneApp.Repository.Infrastructures
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

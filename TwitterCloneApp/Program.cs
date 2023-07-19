@@ -1,11 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using TwitterCloneApp.Core.Repositories;
+using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Services;
-using TwitterCloneApp.Core.UnitOfWorks;
 using TwitterCloneApp.Repository;
-using TwitterCloneApp.Repository.Repositories;
-using TwitterCloneApp.Repository.UnitOfWorks;
+using TwitterCloneApp.Repository.Infrastructures;
 
 var builder = WebApplication.CreateBuilder(args);
 

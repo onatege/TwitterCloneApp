@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 
-namespace TwitterCloneApp.Core.Services
+namespace TwitterCloneApp.Core.Abstracts
 {
-    public interface IService<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
         IQueryable<T> GetAll(Expression<Func<T, bool>> expression);
@@ -10,9 +10,9 @@ namespace TwitterCloneApp.Core.Services
         Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
-        Task UpdateAsync(T entity);
+        void Update(T entity);
         Task SoftDeleteAsync(T entity);
-        Task Remove(T entity);
-        Task RemoveRange(IEnumerable<T> entities);
+        void Remove(T entity);
+        void RemoveRange(IEnumerable<T> entities);
     }
 }
