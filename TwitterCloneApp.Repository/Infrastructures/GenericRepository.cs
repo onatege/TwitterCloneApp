@@ -31,7 +31,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
             return await _dbSet.AnyAsync(expression);
         }
 
-        public IQueryable<T> GetAll(Expression<Func<T, bool>> expression)
+        public IQueryable<T> GetAll()
         {
             return _dbSet.AsNoTracking().AsQueryable();
         }
@@ -42,11 +42,12 @@ namespace TwitterCloneApp.Repository.Infrastructures
         }
         public async Task SoftDeleteAsync(T entity)
         {
-            if (entity is BaseEntity baseEntity)
+            if (entity is IDeletable softDeletable)
             {
-                baseEntity.isDeleted = true;
-                baseEntity.DeletedAt = DateTime.UtcNow;
+                softDeletable.IsDeleted = true;
+                softDeletable.DeletedAt = DateTime.UtcNow;
                 _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
             }
         }
 

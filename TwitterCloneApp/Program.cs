@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TwitterCloneApp.Core.Abstracts;
-using TwitterCloneApp.Core.Services;
+
 using TwitterCloneApp.Repository;
 using TwitterCloneApp.Repository.Infrastructures;
 
