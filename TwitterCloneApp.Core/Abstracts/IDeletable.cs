@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace TwitterCloneApp.Core.Abstracts
 {
-    public interface IBaseEntity
+    public interface IDeletable
     {
-        int Id { get; set; }
-        /*
-        DateTime CreatedDate { get; set; }
-        DateTime? UpdatedDate { get; set; }
-        bool isDeleted { get; set; }
+        bool IsDeleted { get; set; }
         DateTime? DeletedAt { get; set; }
-        */
     }
 }

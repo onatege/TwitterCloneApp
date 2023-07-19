@@ -1,12 +1,19 @@
-﻿namespace TwitterCloneApp.Core.Models
+﻿using TwitterCloneApp.Core.Abstracts;
+
+namespace TwitterCloneApp.Core.Models
 {
-    public class User : BaseEntity
+    public class User : IBaseEntity, ICreatedAt, IUpdatedAt, IDeletable
     {
+        public int Id { get; set; }
 		public string UserName { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string? Biography { get; set; }
         public string? ProfileImg { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

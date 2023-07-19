@@ -1,6 +1,8 @@
-﻿namespace TwitterCloneApp.Core.Models
+﻿using TwitterCloneApp.Core.Abstracts;
+
+namespace TwitterCloneApp.Core.Models
 {
-    public class Tag
+    public class Tag : IBaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
