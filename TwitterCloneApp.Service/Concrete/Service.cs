@@ -36,7 +36,7 @@ namespace TwitterCloneApp.Service.Concrete
 		public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
 		{
 			return await _repository.AnyAsync(expression);
-		}S
+		}
 
 		public async Task<IEnumerable<T>> GetAllAsync()
 		{
