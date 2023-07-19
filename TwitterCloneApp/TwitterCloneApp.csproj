@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitterCloneApp.Repository\TwitterCloneApp.Repository.csproj" />
+    <ProjectReference Include="..\TwitterCloneApp.Service\TwitterCloneApp.Service.csproj" />
   </ItemGroup>
 
 </Project>

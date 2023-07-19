@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TwitterCloneApp.Repository.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedData : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,38 +39,14 @@ namespace TwitterCloneApp.Repository.Migrations
                     Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Biography = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
                     ProfileImg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Follows",
-                columns: table => new
-                {
-                    FollowerId = table.Column<int>(type: "int", nullable: false),
-                    FollowingId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Follows", x => new { x.FollowerId, x.FollowingId });
-                    table.ForeignKey(
-                        name: "FK_Follows_Users_FollowerId",
-                        column: x => x.FollowerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Follows_Users_FollowingId",
-                        column: x => x.FollowingId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,17 +58,48 @@ namespace TwitterCloneApp.Repository.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
                     isMainTweet = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    isDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TweetId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tweets", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Tweets_Tweets_TweetId",
+                        column: x => x.TweetId,
+                        principalTable: "Tweets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Tweets_Users_UserId",
                         column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserUser",
+                columns: table => new
+                {
+                    FollowersId = table.Column<int>(type: "int", nullable: false),
+                    FollowingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserUser", x => new { x.FollowersId, x.FollowingId });
+                    table.ForeignKey(
+                        name: "FK_UserUser_Users_FollowersId",
+                        column: x => x.FollowersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserUser_Users_FollowingId",
+                        column: x => x.FollowingId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -182,33 +189,22 @@ namespace TwitterCloneApp.Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Biography", "CreatedDate", "DeletedAt", "DisplayName", "Email", "Password", "ProfileImg", "UpdatedDate", "UserName", "isDeleted" },
+                columns: new[] { "Id", "Biography", "CreatedAt", "DeletedAt", "DisplayName", "Email", "IsDeleted", "Password", "ProfileImg", "UpdatedAt", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "TEST", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "test1", "test123@gmail.com", "test123", null, null, "TEST", false },
-                    { 2, "TEST1", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "test2", "test111@gmail.com", "test123", null, null, "TEST1", false },
-                    { 3, "TEST2", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "test3", "test121@gmail.com", "test123", null, null, "TEST3", false }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Follows",
-                columns: new[] { "FollowerId", "FollowingId" },
-                values: new object[,]
-                {
-                    { 1, 2 },
-                    { 1, 3 },
-                    { 2, 1 },
-                    { 3, 1 }
+                    { 1, "TEST", null, null, "test1", "test123@gmail.com", false, "test123", null, null, "TEST" },
+                    { 2, "TEST1", null, null, "test2", "test111@gmail.com", false, "test123", null, null, "TEST1" },
+                    { 3, "TEST2", null, null, "test3", "test121@gmail.com", false, "test123", null, null, "TEST3" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Tweets",
-                columns: new[] { "Id", "Content", "CreatedDate", "DeletedAt", "UpdatedDate", "UserId", "isDeleted", "isMainTweet" },
+                columns: new[] { "Id", "Content", "CreatedAt", "DeletedAt", "IsDeleted", "TweetId", "UpdatedAt", "UserId", "isMainTweet" },
                 values: new object[,]
                 {
-                    { 1, "First tweet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, 1, false, true },
-                    { 2, "Second tweet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, 1, false, true },
-                    { 3, "Replied test tweet", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, 2, false, false }
+                    { 1, "First tweet", null, null, false, null, null, 1, true },
+                    { 2, "Second tweet", null, null, false, null, null, 1, true },
+                    { 3, "Replied test tweet", null, null, false, null, null, 2, false }
                 });
 
             migrationBuilder.InsertData(
@@ -229,11 +225,6 @@ namespace TwitterCloneApp.Repository.Migrations
                 values: new object[] { 3, 1 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Follows_FollowingId",
-                table: "Follows",
-                column: "FollowingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Likes_UserId",
                 table: "Likes",
                 column: "UserId");
@@ -249,17 +240,24 @@ namespace TwitterCloneApp.Repository.Migrations
                 column: "TweetsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tweets_TweetId",
+                table: "Tweets",
+                column: "TweetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tweets_UserId",
                 table: "Tweets",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserUser_FollowingId",
+                table: "UserUser",
+                column: "FollowingId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Follows");
-
             migrationBuilder.DropTable(
                 name: "Likes");
 
@@ -268,6 +266,9 @@ namespace TwitterCloneApp.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "TagTweet");
+
+            migrationBuilder.DropTable(
+                name: "UserUser");
 
             migrationBuilder.DropTable(
                 name: "Tags");
