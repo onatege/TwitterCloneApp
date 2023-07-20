@@ -9,9 +9,9 @@ namespace TwitterCloneApp.DTO.Tweet
 {
 	public class TweetDto
 	{
-        public UsernameDto UserName { get; set; }
-        public UserReplyDto RepliedUser { get; set; }
-		public LikeDto Likes { get; set; }
+        public int Id { get; set; }
+		public int UserId { get; set; }
+  
 		public DateTime CreatedAt { get; set; }
 		public string Content { get; set; }
     }

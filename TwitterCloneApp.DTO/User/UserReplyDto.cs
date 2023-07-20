@@ -12,6 +12,6 @@ namespace TwitterCloneApp.DTO.User
 		public string DisplayName { get; set; }
 		public string? ProfileImg { get; set; }
 		public DateTime CreatedAt { get; set; }
-		public LikeDto Likes { get; set; }
+		
     }
 }
