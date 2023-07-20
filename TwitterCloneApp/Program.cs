@@ -23,6 +23,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITweetRepository, TweetRepository>();
+builder.Services.AddScoped<ITweetService, TweetService>();
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
