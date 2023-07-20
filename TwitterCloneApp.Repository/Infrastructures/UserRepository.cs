@@ -32,9 +32,9 @@ namespace TwitterCloneApp.Repository.Repositories
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task SoftDeleteUserAsync(UsernameDto deleteUserDto)
+        public async Task SoftDeleteUserAsync(DeleteDto deleteDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == deleteUserDto.UserName);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == deleteDto.UserName);
             if (user != null)
             {
                 user.IsDeleted = true;

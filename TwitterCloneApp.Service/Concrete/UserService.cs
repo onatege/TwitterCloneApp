@@ -28,7 +28,7 @@ namespace TwitterCloneApp.Service.Concrete
             return await _userRepository.AddUserAsync(addUserDto);
         }
 
-        public async Task SoftDeleteUserAsync(UsernameDto deleteUserDto)
+        public async Task SoftDeleteUserAsync(DeleteDto deleteUserDto)
         {
             await _userRepository.SoftDeleteUserAsync(deleteUserDto);
         }

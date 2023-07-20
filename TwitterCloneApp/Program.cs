@@ -48,3 +48,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+ //username aratmadan parola kaldir
