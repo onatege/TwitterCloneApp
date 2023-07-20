@@ -1,86 +1,74 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
+using TwitterCloneApp.Core.Interfaces;
+using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO;
 
-namespace TwitterCloneApp.Controllers
+namespace TwitterCloneApp.API.Controllers
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	public class UserController : ControllerBase
-	{
-		private readonly AppDbContext _context;
-		public UserController(AppDbContext context)
-		{
-			_context = context;
-		}
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _service;
 
-		[HttpGet]
-		public async Task<IActionResult> GetAllUsers()
-		{
-			var users = await _context.Users.ToListAsync();
-			return Ok(users);
-		}
+        public UserController(IUserService service)
+        {
+            _service = service;
+        }
 
-		[HttpPost]
-		public async Task<IActionResult> NewUser()
-		{
-			var user = new User
-			{
-				DisplayName = "canbo",
-				UserName = "canbo1",
-				Email = "canbo@gmail.com",
-				Password = "123",
-				IsDeleted = false,
-				Biography = "mobven",
-			};
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserByUsername(string username)
+        {
+            var usernameDto = new UsernameDto { UserName = username };
+            var user = await _userService.GetUserByUsernameAsync(usernameDto);
 
-			await _context.AddAsync(user);
-			await _context.SaveChangesAsync();
-			return Ok(user);
-		}
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-		[HttpPut("{id}")]
-		public async Task<IActionResult> Update(int id, User updatedUser)
-		{
-			var user = await _context.Users.FindAsync(id);
+            return Ok(user);
+        }
 
-			if(user == null)
-			{
-				return NotFound();
-			}
-			user.DisplayName = updatedUser.DisplayName;
-			user.UserName = updatedUser.UserName;
-			user.Email = updatedUser.Email;
-			user.Password = updatedUser.Password;
-			user.Biography = updatedUser.Biography;
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AddUserDto addUserDto)
+        {
+            var user = await _userService.AddUserAsync(addUserDto);
+            return CreatedAtAction(nameof(GetUserByUsername), new { username = user.UserName }, user);
+        }
 
-			_context.Update(user);
-			await _context.SaveChangesAsync();
+        [HttpPut("{username}")]
+        public async Task<IActionResult> UpdateUser(string username, UpdateUserDto updateUserDto)
+        {
+            var usernameDto = new UsernameDto { UserName = username };
+            var existingUser = await _userService.GetUserByUsernameAsync(usernameDto);
 
-			return Ok(user);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
 
-		}
+            await _userService.UpdateUserAsync(updateUserDto);
+            return NoContent();
+        }
 
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> RemoveAsync(int id)
-		{
-			var user = await _context.Users.FindAsync(id);
+        [HttpPut("{username}")]
+        public async Task<IActionResult> SoftDeleteUser(string username)
+        {
+            var deleteUserDto = new UsernameDto { UserName = username };
+            var user = await _userService.GetUserByUsernameAsync(deleteUserDto);
 
-			if (user.IsDeleted == false)
-			{
-				user.IsDeleted = true;
-				_context.Update(user);
-				await _context.SaveChangesAsync();
-			}
-			else
-			{
-				_context.Users.Remove(user);
-				await _context.SaveChangesAsync();
-			}
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-			return Ok(user);
-		}
+            user.IsDeleted = true;
+            user.DeletedAt = DateTime.UtcNow;
+            await _userService.UpdateUserAsync(user);
+
+            return NoContent();
+        }
+
     }
 }

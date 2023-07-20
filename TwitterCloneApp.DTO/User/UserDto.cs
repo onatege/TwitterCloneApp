@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TwitterCloneApp.DTO;
 
-namespace TwitterCloneApp.Core.DTOs
+namespace TwitterCloneApp.DTO.User
 {
-	public class UserDto : IBaseDto
-	{
-        public int Id { get; set; }
+    public class UserDto
+    {
         public string UserName { get; set; }
         public string DisplayName { get; set; }
         public string Email { get; set; }
