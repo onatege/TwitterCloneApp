@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterCloneApp.Core", "Twi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterCloneApp.Repository", "TwitterCloneApp.Repository\TwitterCloneApp.Repository.csproj", "{2F68BA7E-73D7-450D-A1C3-9310FE4A4961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterCloneApp.Service", "TwitterCloneApp.Service\TwitterCloneApp.Service.csproj", "{91FEF126-5D6E-4C62-883A-7FCDFE20B923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TwitterCloneApp.Service", "TwitterCloneApp.Service\TwitterCloneApp.Service.csproj", "{91FEF126-5D6E-4C62-883A-7FCDFE20B923}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterCloneApp.DTO", "TwitterCloneApp.DTO\TwitterCloneApp.DTO.csproj", "{0D7DB767-8DE7-4DAA-8937-4052D9E3D4C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{91FEF126-5D6E-4C62-883A-7FCDFE20B923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91FEF126-5D6E-4C62-883A-7FCDFE20B923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91FEF126-5D6E-4C62-883A-7FCDFE20B923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D7DB767-8DE7-4DAA-8937-4052D9E3D4C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D7DB767-8DE7-4DAA-8937-4052D9E3D4C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D7DB767-8DE7-4DAA-8937-4052D9E3D4C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D7DB767-8DE7-4DAA-8937-4052D9E3D4C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

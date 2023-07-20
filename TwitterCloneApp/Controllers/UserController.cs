@@ -35,7 +35,7 @@ namespace TwitterCloneApp.Controllers
 				IsDeleted = false,
 				Biography = "mobven",
 			};
-			
+
 			await _context.AddAsync(user);
 			await _context.SaveChangesAsync();
 			return Ok(user);
