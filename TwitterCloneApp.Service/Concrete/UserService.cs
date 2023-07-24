@@ -18,7 +18,7 @@ namespace TwitterCloneApp.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<UserDto> GetUserByUsernameAsync(UsernameDto getByUsernameDto)
+        public async Task<GetUserProfileDto> GetUserByUsernameAsync(UsernameDto getByUsernameDto) //Task, await, async ilişkisi!!
         {
             return await _userRepository.GetUserByUsernameAsync(getByUsernameDto);
         }

@@ -14,14 +14,14 @@ namespace TwitterCloneApp.Repository.Repositories
 
         public UserRepository(AppDbContext context, IMapper mapper)
         {
-            _context = context;
+            _context = context; 
             _mapper = mapper;
         }
 
-        public async Task<UserDto> GetUserByUsernameAsync(UsernameDto getByUsernameDto)
+        public async Task<GetUserProfileDto> GetUserByUsernameAsync(UsernameDto getByUsernameDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == getByUsernameDto.UserName);
-            return _mapper.Map<UserDto>(user);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName.Equals(getByUsernameDto.UserName));
+            return _mapper.Map<GetUserProfileDto>(user);
         }
 
         public async Task<UserDto> AddUserAsync(AddUserDto addUserDto)

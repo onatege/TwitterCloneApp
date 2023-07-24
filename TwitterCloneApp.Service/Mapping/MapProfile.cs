@@ -15,6 +15,7 @@ namespace TwitterCloneApp.Service.Mapping
             CreateMap<UpdateUserDto, User>().ReverseMap();
             CreateMap<UsernameDto, User>().ReverseMap();
             CreateMap<DeleteDto, User>().ReverseMap();
+            CreateMap<GetUserProfileDto, User>().ReverseMap();
         }
     }
 }
