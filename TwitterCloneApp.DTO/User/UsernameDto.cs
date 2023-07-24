@@ -1,6 +1,6 @@
 ﻿namespace TwitterCloneApp.DTO
 {
-    public class UsernameDto
+    public class UserNameDto
     {
         public string UserName { get; set; }
     }

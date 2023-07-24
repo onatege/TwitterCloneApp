@@ -2,6 +2,8 @@
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.DTO.User;
 using TwitterCloneApp.DTO;
+using TwitterCloneApp.DTO.Response;
+using System.Net;
 
 namespace TwitterCloneApp.API.Controllers
 {
@@ -16,51 +18,43 @@ namespace TwitterCloneApp.API.Controllers
             _service = service;
         }
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetUserByUsername(string username)
-        {
-            var usernameDto = new UsernameDto { UserName = username };
-            var user = await _service.GetUserByUsernameAsync(usernameDto);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
+        //[HttpGet("[action]")]
+        //public async Task<IActionResult> GetUserProfile(string username)
+        //{
+        //    var userProf = await _service.GetUserProfileAsync(username);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserDto addUserDto)
         {
-            var user = await _service.AddUserAsync(addUserDto);
-            return CreatedAtAction(nameof(GetUserByUsername), new { username = user.UserName }, user);
+            await _service.AddUserAsync(addUserDto);
+            return Ok();
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateUser(string username, UpdateUserDto updateUserDto)
-        {
-            var usernameDto = new UsernameDto { UserName = username };
-            var existingUser = await _service.GetUserByUsernameAsync(usernameDto);
+		[HttpPost("[action]")]
+		public async Task<IActionResult> FindUserByNameAsync(UserNameDto userNameDto)
+		{
+			await _service.FindUserByNameAsync(userNameDto);
+			return Ok();
+		}
 
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
+		//[HttpPut("[action]")]
+		//public async Task<IActionResult> UpdateUser(string username, UpdateUserDto updateUserDto)
+		//{
+		//    
 
-            await _service.UpdateUserAsync(updateUserDto);
-            return NoContent();
-        }
+		//    await _service.UpdateUserAsync(updateUserDto);
+		//    return NoContent();
+		//}
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> SoftDeleteUser(string username)
-        {
-            var deleteUserDto = new DeleteDto { UserName = username, IsDeleted = true, DeletedAt = DateTime.UtcNow };
-            await _service.SoftDeleteUserAsync(deleteUserDto);
+		//[HttpPut("[action]")]
+		//public async Task<IActionResult> SoftDeleteUser(string username)
+		//{
+		//    await _service.SoftDeleteUserAsync(deleteUserDto);
 
-            return NoContent();
-        }
+		//    return NoContent();
+		//}
 
 
-    }
+	}
 }

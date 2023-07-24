@@ -1,13 +1,13 @@
-﻿using TwitterCloneApp.DTO;
+﻿using TwitterCloneApp.Core.Abstracts;
+using TwitterCloneApp.Core.Models;
+using TwitterCloneApp.DTO;
+using TwitterCloneApp.DTO.Response;
 using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.Core.Interfaces
 {
-    public interface IUserRepository
+	public interface IUserRepository : IGenericRepository<User>
     {
-        Task<GetUserProfileDto> GetUserByUsernameAsync(UsernameDto getByUsernameDto);
-        Task<UserDto> AddUserAsync(AddUserDto addUserDto);
-        Task SoftDeleteUserAsync(DeleteDto deleteUserDto);
-        Task UpdateUserAsync(UpdateUserDto updateUserDto);
+        Task<User> FindUserByNameAsync(string userName);
     }
 }
