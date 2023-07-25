@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using System.Net;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Response;
 using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.Service.Concrete
@@ -47,13 +45,7 @@ namespace TwitterCloneApp.Service.Concrete
         //    await _userRepository.SoftDeleteUserAsync(deleteUserDto);
         //}
 
-        /*public async Task<UpdateUserDto> UpdateUserAsync(UserNameDto userNameDto)
-        {
-            var user = await _userRepository.UpdateUserAsync(userNameDto.UserName);
-            var userDto = _mapper.Map<UpdateUserDto>(user);
-            return userDto;
-        }
-        */
+   
         public async Task<UpdateUserDto> UpdateUserAsync(string userName, UpdateUserDto updateUserDto)
         {
             var user = await _userRepository.FindUserByNameAsync(userName);

@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Interfaces;
-using TwitterCloneApp.DTO.User;
 using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Response;
-using System.Net;
+using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.API.Controllers
 {
-    [ApiController]
+	[ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
@@ -39,13 +37,8 @@ namespace TwitterCloneApp.API.Controllers
 			return Ok(updateUserDto);
 		}
 
-		//[HttpPut("[action]")]
-		//public async Task<IActionResult> SoftDeleteUser(string username)
-		//{
-		//    await _service.SoftDeleteUserAsync(deleteUserDto);
-
-		//    return NoContent();
-		//}
+		
+		
 
 
 	}

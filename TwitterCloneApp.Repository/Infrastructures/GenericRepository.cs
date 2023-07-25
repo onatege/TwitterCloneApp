@@ -2,11 +2,10 @@
 using System.Linq.Expressions;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
-using TwitterCloneApp.Core.Models;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+	public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
