@@ -18,12 +18,6 @@ namespace TwitterCloneApp.API.Controllers
             _service = service;
         }
 
-        //[HttpGet("[action]")]
-        //public async Task<IActionResult> GetUserProfile(string username)
-        //{
-        //    var userProf = await _service.GetUserProfileAsync(username);
-        //}
-
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserDto addUserDto)
         {
@@ -38,14 +32,12 @@ namespace TwitterCloneApp.API.Controllers
 			return Ok();
 		}
 
-		//[HttpPut("[action]")]
-		//public async Task<IActionResult> UpdateUser(string username, UpdateUserDto updateUserDto)
-		//{
-		//    
-
-		//    await _service.UpdateUserAsync(updateUserDto);
-		//    return NoContent();
-		//}
+		[HttpPut("[action]")]
+		public async Task<IActionResult> UpdateUserAsync(string userName, UpdateUserDto updateUserDto)
+		{
+            await _service.UpdateUserAsync(userName,updateUserDto);
+			return Ok(updateUserDto);
+		}
 
 		//[HttpPut("[action]")]
 		//public async Task<IActionResult> SoftDeleteUser(string username)

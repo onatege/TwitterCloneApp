@@ -8,7 +8,7 @@ namespace TwitterCloneApp.DTO.User
 {
 	public class UserReplyDto
 	{
-        public UsernameDto UserName { get; set; }
+        public UserNameDto UserName { get; set; }
 		public string DisplayName { get; set; }
 		public string? ProfileImg { get; set; }
 		public DateTime CreatedAt { get; set; }

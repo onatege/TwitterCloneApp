@@ -9,5 +9,6 @@ namespace TwitterCloneApp.Core.Interfaces
 	public interface IUserRepository : IGenericRepository<User>
     {
         Task<User> FindUserByNameAsync(string userName);
+        Task<User> UpdateUserAsync(User user);
     }
 }
