@@ -9,31 +9,31 @@ namespace TwitterCloneApp.API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _service;
+        private readonly IUserService _userService;
 
-        public UserController(IUserService service)
+        public UserController(IUserService userService)
         {
-            _service = service;
+            _userService = userService;
         }
 
         [HttpPost]
         public async Task<IActionResult> AddUser(AddUserDto addUserDto)
         {
-            await _service.AddUserAsync(addUserDto);
+            await _userService.AddUserAsync(addUserDto);
             return Ok();
         }
 
 		[HttpPost("[action]")]
-		public async Task<IActionResult> FindUserByNameAsync(UserNameDto userNameDto)
+		public async Task<IActionResult> FindUserByIdAsync(int id)
 		{
-			var user = await _service.FindUserByNameAsync(userNameDto);
+			var user = await _userService.FindUserByIdAsync(id);
 			return Ok(user);
 		}
 
 		[HttpPut("[action]")]
-		public async Task<IActionResult> UpdateUserAsync(string userName, UpdateUserDto updateUserDto)
+		public async Task<IActionResult> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
 		{
-            await _service.UpdateUserAsync(userName,updateUserDto);
+            await _userService.UpdateUserAsync(id,updateUserDto);
 			return Ok(updateUserDto);
 		}
 	}

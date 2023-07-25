@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Tweet;
+using TwitterCloneApp.Repository.Migrations;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {
@@ -21,17 +22,9 @@ namespace TwitterCloneApp.Repository.Infrastructures
             return await _context.Tweets.ToListAsync();
         }
 
-        public async Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(string userName)
+        public async Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
-
-            if (user == null)
-            {
-                return new List<TweetResponseDto>();
-            }
-
-            var tweets = await _context.Tweets
-                .Where(t => t.UserId == user.Id)
+            var tweets = await _context.Tweets.Where(u => u.UserId == id)
                 .Select(t => new TweetResponseDto
                 {
                     Content = t.Content,

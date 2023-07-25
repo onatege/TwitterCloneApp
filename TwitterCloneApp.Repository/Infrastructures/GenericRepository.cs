@@ -23,7 +23,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 createdAtEntity.CreatedAt = DateTime.UtcNow;
             }
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         public async Task AddRangeAsync(IEnumerable<T> entities)
@@ -52,7 +52,6 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 softDeletable.IsDeleted = true;
                 softDeletable.DeletedAt = DateTime.UtcNow;
                 _dbSet.Update(entity);
-                await _context.SaveChangesAsync();
             }
         }
 

@@ -16,16 +16,15 @@ namespace TwitterCloneApp.Repository.Repositories
 			_unitOfWork = unitOfWork;
 		}
 
-		public async Task<User> FindUserByNameAsync(string userName)
+		public async Task<User> FindUserByIdAsync(int id)
 		{
-            var user = await _user.Include(u => u.Followers).Include(u => u.Following).Where(u => u.UserName == userName).FirstOrDefaultAsync();
+            var user = await _user.Include(u => u.Followers).Include(u => u.Following).Where(u => u.Id == id).FirstOrDefaultAsync();
             return user;
 		}
-        //.Include(u => u.Tweets 
+        //.Include(u => u.Followers).Include(u => u.Following)
         public async Task<User> UpdateUserAsync(User user)
 		{
 			_user.Update(user);
-			await _unitOfWork.CommitAsync();
 			return user;
 		}
 		

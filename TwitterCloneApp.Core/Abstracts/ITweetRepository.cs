@@ -11,6 +11,6 @@ namespace TwitterCloneApp.Core.Abstracts
 	public interface ITweetRepository : IGenericRepository<Tweet>
 	{
 		Task<List<Tweet>> GetTweets();
-		Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(string userName);
+		Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(int id);
     }
 }

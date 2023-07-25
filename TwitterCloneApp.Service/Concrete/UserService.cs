@@ -19,24 +19,26 @@ namespace TwitterCloneApp.Service.Concrete
             _userRepository = userRepository;
             _mapper = mapper;
             _tweetRepository = tweetRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task AddUserAsync(AddUserDto addUserDto)
         {
             var user = _mapper.Map<User>(addUserDto);
             await _userRepository.AddAsync(user);
-            
+            await _unitOfWork.CommitAsync();
         }
 
-		public async Task<GetUserProfileDto> FindUserByNameAsync(UserNameDto userNameDto)
+		public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
 		{
-            var user = await _userRepository.FindUserByNameAsync(userNameDto.UserName);
+            var user = await _userRepository.FindUserByIdAsync(id);
             if (user != null) 
             {
                 var userDto = _mapper.Map<GetUserProfileDto>(user);
                 userDto.FollowerCount = user.Followers?.Count ?? 0;
                 userDto.FollowingCount = user.Following?.Count ?? 0;
-                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCount(userNameDto.UserName);
+                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCount(id);
+                await _unitOfWork.CommitAsync();
                 return userDto;
             }
             return null;
@@ -49,9 +51,9 @@ namespace TwitterCloneApp.Service.Concrete
         //}
 
    
-        public async Task<UpdateUserDto> UpdateUserAsync(string userName, UpdateUserDto updateUserDto)
+        public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
-            var user = await _userRepository.FindUserByNameAsync(userName);
+            var user = await _userRepository.FindUserByIdAsync(id);
             if (user != null)
             {
                 user.UserName = updateUserDto.UserName;
@@ -60,7 +62,8 @@ namespace TwitterCloneApp.Service.Concrete
                 user.Biography = updateUserDto.Biography;
                 user.ProfileImg = updateUserDto.ProfileImg;
 
-                await _userRepository.UpdateUserAsync(user);
+                _userRepository.Update(user);
+                await _unitOfWork.CommitAsync();
                 var userDto = _mapper.Map<UpdateUserDto>(user);
                 return userDto;
             }
