@@ -18,6 +18,10 @@ namespace TwitterCloneApp.Repository.Infrastructures
 
         public async Task AddAsync(T entity)
         {
+            if (entity is ICreatedAt createdAtEntity)
+            {
+                createdAtEntity.CreatedAt = DateTime.UtcNow;
+            }
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
@@ -64,7 +68,12 @@ namespace TwitterCloneApp.Repository.Infrastructures
 
         public void Update(T entity)
         {
+            if (entity is IUpdatedAt updatedAtEntity)
+            {
+                updatedAtEntity.UpdatedAt = DateTime.UtcNow;
+            }
             _dbSet.Update(entity);
+            //await _context.SaveChangesAsync();
         }
 
         public IQueryable<T> Where(Expression<Func<T, bool>> expression)

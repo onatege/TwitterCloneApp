@@ -12,11 +12,13 @@ namespace TwitterCloneApp.Service.Concrete
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ITweetRepository _tweetRepository;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork, ITweetRepository tweetRepository)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _tweetRepository = tweetRepository;
         }
 
         //public async Task<GetUserProfileDto> GetUserProfileAsync(string username) //Task, await, async ilişkisi!!
@@ -36,8 +38,16 @@ namespace TwitterCloneApp.Service.Concrete
 		public async Task<GetUserProfileDto> FindUserByNameAsync(UserNameDto userNameDto)
 		{
             var user = await _userRepository.FindUserByNameAsync(userNameDto.UserName);
-            var userDto = _mapper.Map<GetUserProfileDto>(user);
-            return userDto;
+            if (user != null) 
+            {
+                var userDto = _mapper.Map<GetUserProfileDto>(user);
+                userDto.FollowerCount = user.Followers?.Count ?? 0;
+                userDto.FollowingCount = user.Following?.Count ?? 0;
+                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCount(userNameDto.UserName);
+                return userDto;
+            }
+            return null;
+            
 		}
 
         //public async Task SoftDeleteUserAsync(DeleteDto deleteUserDto)

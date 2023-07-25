@@ -9,10 +9,9 @@ namespace TwitterCloneApp.DTO.User
         public string? Biography { get; set; }
         public string? ProfileImg { get; set; }
         public DateTime? CreatedAt { get; set; }
-        /* 
-         * Kullanıcı kaç Follower, Following'e sahip - kaç Tweet'e sahip eklenecek.
-         *  public List<TweetSearchDto> Tweets { get; set; } - Tweet Controllerda yapılacak (Kullanıcıya ait tweetleri görme.
-        */
+        public int FollowerCount { get; set; }
+        public int FollowingCount { get; set; }
+        public List<TweetResponseDto> Tweets { get; set; }
 
     }
 }

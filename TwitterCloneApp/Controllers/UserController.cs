@@ -26,8 +26,8 @@ namespace TwitterCloneApp.API.Controllers
 		[HttpPost("[action]")]
 		public async Task<IActionResult> FindUserByNameAsync(UserNameDto userNameDto)
 		{
-			await _service.FindUserByNameAsync(userNameDto);
-			return Ok();
+			var user = await _service.FindUserByNameAsync(userNameDto);
+			return Ok(user);
 		}
 
 		[HttpPut("[action]")]
@@ -36,10 +36,5 @@ namespace TwitterCloneApp.API.Controllers
             await _service.UpdateUserAsync(userName,updateUserDto);
 			return Ok(updateUserDto);
 		}
-
-		
-		
-
-
 	}
 }
