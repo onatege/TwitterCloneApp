@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;
+using TwitterCloneApp.DTO.Tweet;
 using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.Service.Mapping
@@ -16,6 +17,7 @@ namespace TwitterCloneApp.Service.Mapping
             CreateMap<UserNameDto, User>().ReverseMap();
             CreateMap<DeleteDto, User>().ReverseMap();
             CreateMap<User,GetUserProfileDto> ().ReverseMap();
+            CreateMap<AddTweetDto, Tweet>().ReverseMap();
         }
     }
 }

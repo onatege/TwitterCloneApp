@@ -8,8 +8,8 @@ using TwitterCloneApp.DTO.Tweet;
 
 namespace TwitterCloneApp.Core.Abstracts
 {
-	public interface ITweetService : IService<Tweet>
+	public interface ITweetService 
 	{
-		Task<List<TweetDto>> GetAllTweetsAsync();
+		Task AddTweetAsync(AddTweetDto addTweetDto);
 	}
 }

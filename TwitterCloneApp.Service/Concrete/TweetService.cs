@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,17 +10,25 @@ using TwitterCloneApp.DTO.Tweet;
 
 namespace TwitterCloneApp.Service.Concrete
 {
-	public class TweetService : Service<Tweet>, ITweetService
+	public class TweetService : ITweetService
 	{
-		private readonly ITweetService _tweetService;
-		public TweetService(IGenericRepository<Tweet> repository, IUnitOfWork unitOfWork) : base(repository, unitOfWork)
+		private readonly ITweetRepository _tweetRepository;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		public TweetService(IUnitOfWork unitOfWork, ITweetRepository tweetRepository, IMapper mapper)
 		{
-
+			_unitOfWork = unitOfWork;
+			_tweetRepository = tweetRepository;
+			_mapper = mapper;
 		}
 
-		public async Task<List<TweetDto>> GetAllTweetsAsync()
+		public async Task AddTweetAsync(AddTweetDto addTweetDto)
 		{
-			return await _tweetService.GetAllTweetsAsync();
+			var tweet = _mapper.Map<Tweet>(addTweetDto);
+			await _tweetRepository.AddAsync(tweet);
+			await _unitOfWork.CommitAsync();
 		}
+
+		
 	}
 }
