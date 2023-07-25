@@ -10,16 +10,16 @@ using TwitterCloneApp.DTO.Tweet;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {
-	public class TweetRepository : GenericRepository<Tweet>, ITweetRepository
-	{
-		public TweetRepository(AppDbContext context) : base(context)
-		{
-		}
+    public class TweetRepository : GenericRepository<Tweet>, ITweetRepository
+    {
+        public TweetRepository(AppDbContext context) : base(context)
+        {
+        }
 
-		public async Task<List<Tweet>> GetTweets()
-		{
-			return await _context.Tweets.ToListAsync();
-		}
+        public async Task<List<Tweet>> GetTweets()
+        {
+            return await _context.Tweets.ToListAsync();
+        }
 
         public async Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(string userName)
         {
@@ -36,7 +36,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 {
                     Content = t.Content,
                     CreatedAt = t.CreatedAt,
-                    LikeCount = t.Likes.Count
+                    LikeCount = t.Likes != null ? t.Likes.Count : 0
                 })
                 .ToListAsync();
 
