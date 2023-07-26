@@ -38,6 +38,13 @@ namespace TwitterCloneApp.Service.Concrete
 			return tweetDto;
 		}
 
+		public async Task<List<TweetDto>> GetAllTweetAsync()
+		{
+			var tweet = await _tweetRepository.GetTweets();
+			var tweetDto = _mapper.Map<List<TweetDto>>(tweet);
+			return tweetDto;
+		}
+
 		
 	}
 }

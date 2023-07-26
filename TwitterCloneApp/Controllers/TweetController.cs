@@ -14,6 +14,12 @@ namespace TwitterCloneApp.Controllers
 
 			_tweetService = tweetService;
 		}
+		[HttpGet]
+		public async Task<IActionResult> GetAllTweetAsync()
+		{
+			var tweets = await _tweetService.GetAllTweetAsync();
+			return Ok(tweets);
+		}
 
 		[HttpPost]
 		public async Task<IActionResult> AddTweetAsync(AddTweetDto addTweetDto)
