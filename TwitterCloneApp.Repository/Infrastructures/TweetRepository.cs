@@ -22,7 +22,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
             return await _context.Tweets.ToListAsync();
         }
 
-		public async Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(int id)
+		public async Task<List<TweetResponseDto>> GetUserTweetsWithLikeCountAsync(int id)
         {
             var tweets = await _context.Tweets.Where(u => u.UserId == id)
                 .Select(t => new TweetResponseDto
@@ -36,6 +36,22 @@ namespace TwitterCloneApp.Repository.Infrastructures
             return tweets;
         }
 
-		
-	}
+        public async Task<List<TweetResponseDto>> GetTagTweetsWithLikeCountAsync(int id)
+        {
+            var tagTweets = await _context.Tweets
+                .Where(t => t.Tags.Any(tag => tag.Id == id))
+                .Select(t => new TweetResponseDto
+                {
+                    Content = t.Content,
+                    CreatedAt = t.CreatedAt,
+                    LikeCount = t.Likes != null ? t.Likes.Count : 0
+                })
+                .ToListAsync();
+
+            return tagTweets;
+        }
+
+
+
+    }
 }

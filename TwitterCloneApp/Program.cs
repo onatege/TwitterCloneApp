@@ -25,6 +25,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITweetRepository, TweetRepository>();
 builder.Services.AddScoped<ITweetService, TweetService>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagService, TagService>();
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {

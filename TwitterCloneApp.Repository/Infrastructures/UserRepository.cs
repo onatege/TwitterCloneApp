@@ -9,11 +9,9 @@ namespace TwitterCloneApp.Repository.Repositories
 	public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private readonly DbSet<User> _user;
-		private readonly IUnitOfWork _unitOfWork;
-        public UserRepository(AppDbContext context, IUnitOfWork unitOfWork) : base(context)
+        public UserRepository(AppDbContext context) : base(context)
         {
             _user = context.Set<User>();
-			_unitOfWork = unitOfWork;
 		}
 
 		public async Task<User> FindUserByIdAsync(int id)

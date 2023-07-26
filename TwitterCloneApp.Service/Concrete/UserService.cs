@@ -37,7 +37,7 @@ namespace TwitterCloneApp.Service.Concrete
                 var userDto = _mapper.Map<GetUserProfileDto>(user);
                 userDto.FollowerCount = user.Followers?.Count ?? 0;
                 userDto.FollowingCount = user.Following?.Count ?? 0;
-                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCount(id);
+                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
                 await _unitOfWork.CommitAsync();
                 return userDto;
             }

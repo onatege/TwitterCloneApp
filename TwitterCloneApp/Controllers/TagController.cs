@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.Repository;
+using TwitterCloneApp.Core.Abstracts;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 namespace TwitterCloneApp.Controllers
 {
@@ -10,25 +12,25 @@ namespace TwitterCloneApp.Controllers
 	[ApiController]
 	public class TagController : ControllerBase
 	{
-		private readonly AppDbContext _dbContext;
-		public TagController(AppDbContext dbContext)
+		private readonly ITagService _tagService;
+		public TagController(ITagService tagService)
 		{
-			_dbContext = dbContext;
+			_tagService = tagService;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllTags()
+		public async Task<IActionResult> GetAllTagsAsync()
 		{
-			var tweets = await _dbContext.Tags.ToListAsync();
-			return Ok(tweets);
+			var tags = await _tagService.GetAllTagsAsync();
+			return Ok(tags);
 		}
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetTagsById(int id)
+        [HttpPost("[action]")]
+		public async Task<IActionResult> GetTagByIdAsync(int id)
 		{
-			var tag = await _dbContext.Tags.FindAsync(id);
+			var tag = await _tagService.GetTagByIdAsync(id);
 			return Ok(tag);
 		}
-
+        /*
 		[HttpPost]
 		public async Task<IActionResult> NewTag()
 		{
@@ -54,5 +56,6 @@ namespace TwitterCloneApp.Controllers
 			await _dbContext.SaveChangesAsync();
 			return Ok(tag);
 		}
-	}
+		*/
+    }
 }
