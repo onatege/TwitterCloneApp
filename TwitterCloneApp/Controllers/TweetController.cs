@@ -27,18 +27,24 @@ namespace TwitterCloneApp.Controllers
 			await _tweetService.AddTweetAsync(addTweetDto);
 			return Ok();
 		}
-		[HttpGet("{id}")]
+		[HttpGet("[action]")]
 		public async Task<IActionResult> GetTweetByIdAsync(int id)
 		{
 			var tweet = await _tweetService.GetTweetByIdAsync(id);
 			return Ok(tweet);
 		}
 
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> RemoveTweet(int id)
+		[HttpDelete("[action]")]
+		public async Task<IActionResult> RemoveTweetAsync(int id)
 		{
-			var tweetId = await _tweetService.GetByIdAsync(id);
-			_tweetService.Remove(tweetId);
+			await _tweetService.RemoveTweetAsync(id);
+			return Ok();
+		}
+
+		[HttpPut("[action]")]
+		public async Task<IActionResult> AddTagToTweetAsync(int tweetId, int tagId)
+		{
+			await _tweetService.AddTagToTweetAsync(tweetId, tagId);
 			return Ok();
 		}
 

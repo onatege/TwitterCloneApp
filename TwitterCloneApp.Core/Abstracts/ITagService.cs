@@ -10,6 +10,8 @@ namespace TwitterCloneApp.Core.Abstracts
     public interface ITagService
     {
         Task<List<TagDto>> GetAllTagsAsync();
-        Task<TagResponseDto> GetTagByIdAsync(int id);
+        Task<TagDto> GetTagByIdAsync(int id);
+        Task AddTagAsync(AddTagDto addTagDto);
+        Task RemoveTagAsync(int id);
     }
 }

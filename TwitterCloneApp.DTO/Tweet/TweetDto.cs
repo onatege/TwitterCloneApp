@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.DTO.Tweet
@@ -16,5 +17,6 @@ namespace TwitterCloneApp.DTO.Tweet
 		public DateTime? CreatedAt { get; set; }
 		public string? Content { get; set; }
 		public int LikeCount { get; set; }
+		public List<TagResponseDto>? Tags { get; set; }
 	}
 }

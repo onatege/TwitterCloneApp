@@ -21,8 +21,9 @@ namespace TwitterCloneApp.Service.Mapping
             CreateMap<AddTweetDto, Tweet>().ReverseMap();
             CreateMap<TweetDto, Tweet>().ReverseMap();
             CreateMap<Tweet, UpdateTweetDto>().ReverseMap();
-            CreateMap<Tag, TagDto>().ReverseMap();
             CreateMap<Tag, TagResponseDto>().ReverseMap();
+            CreateMap<Tag, TagDto>().ReverseMap();
+            CreateMap<Tag, AddTagDto>().ReverseMap();
         }
     }
 }

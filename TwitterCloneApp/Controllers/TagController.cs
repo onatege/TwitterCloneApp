@@ -5,6 +5,8 @@ using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.Repository;
 using TwitterCloneApp.Core.Abstracts;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using TwitterCloneApp.DTO;
+using TwitterCloneApp.DTO.Tag;
 
 namespace TwitterCloneApp.Controllers
 {
@@ -24,38 +26,26 @@ namespace TwitterCloneApp.Controllers
 			var tags = await _tagService.GetAllTagsAsync();
 			return Ok(tags);
 		}
-        [HttpPost("[action]")]
+        [HttpGet("[action]")]
 		public async Task<IActionResult> GetTagByIdAsync(int id)
 		{
 			var tag = await _tagService.GetTagByIdAsync(id);
 			return Ok(tag);
 		}
-        /*
+
 		[HttpPost]
-		public async Task<IActionResult> NewTag()
+		public async Task<IActionResult> AddTagAsync(AddTagDto addTagDto)
 		{
-			var tag = new Tag
-			{
-				Name = "#testing",
-				isTrending = true,
-			};
-	
-			await _dbContext.Tags.AddAsync(tag);
-			await _dbContext.SaveChangesAsync();
-			return Ok(tag);
-		}
-
+            await _tagService.AddTagAsync(addTagDto);
+            return Ok();
+        }
+		
 		[HttpDelete("{id}")]
-		public async Task<IActionResult> RemoveTag(int id)
+		public async Task<IActionResult> RemoveTagAsync(int id)
 		{
-			var tag = _dbContext.Tags.Find(id);
-
-			if(tag is null) { return NotFound(); };
-
-			_dbContext.Tags.Remove(tag);
-			await _dbContext.SaveChangesAsync();
-			return Ok(tag);
+			await _tagService.RemoveTagAsync(id);
+			return Ok();
 		}
-		*/
+		
     }
 }

@@ -17,7 +17,7 @@ namespace TwitterCloneApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(AddUserDto addUserDto)
+        public async Task<IActionResult> AddUserAsync(AddUserDto addUserDto)
         {
             await _userService.AddUserAsync(addUserDto);
             return Ok();

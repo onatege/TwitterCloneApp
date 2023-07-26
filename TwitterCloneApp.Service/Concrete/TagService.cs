@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using System.Runtime.CompilerServices;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
+using TwitterCloneApp.DTO;
 using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.User;
 
@@ -27,16 +29,30 @@ namespace TwitterCloneApp.Service.Concrete
             return tagDto;
         }
 
-        public async Task<TagResponseDto> GetTagByIdAsync(int id)
+        public async Task<TagDto> GetTagByIdAsync(int id)
         {
             var tag = await _tagRepository.GetTagByIdAsync(id);
             if (tag != null)
             {
-                var tagDto = _mapper.Map<TagResponseDto>(tag);
+                var tagDto = _mapper.Map<TagDto>(tag);
                 tagDto.Tweets = await _tweetRepository.GetTagTweetsWithLikeCountAsync(id);
                 return tagDto;
             }
             return null;
+        }
+
+        public async Task AddTagAsync(AddTagDto addTagDto)
+        {
+            var tag = _mapper.Map<Tag>(addTagDto);
+            await _tagRepository.AddAsync(tag);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task RemoveTagAsync(int id)
+        {
+            var tag = await _tagRepository.GetByIdAsync(id);
+            _tagRepository.Remove(tag);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

@@ -13,5 +13,7 @@ namespace TwitterCloneApp.Core.Abstracts
 		Task AddTweetAsync(AddTweetDto addTweetDto);
 		Task<TweetDto> GetTweetByIdAsync(int id);
 		Task<List<TweetDto>> GetAllTweetAsync();
-	}
+		Task RemoveTweetAsync(int id);
+		Task AddTagToTweetAsync(int id, int tagId);
+    }
 }
