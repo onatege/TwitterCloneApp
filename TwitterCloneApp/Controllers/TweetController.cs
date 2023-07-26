@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Abstracts;
-using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
 using TwitterCloneApp.DTO.Tweet;
-using TwitterCloneApp.Repository;
 
 namespace TwitterCloneApp.Controllers
 {
@@ -27,5 +21,20 @@ namespace TwitterCloneApp.Controllers
 			await _tweetService.AddTweetAsync(addTweetDto);
 			return Ok();
 		}
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetTweetByIdAsync(int id)
+		{
+			var tweet = await _tweetService.GetTweetByIdAsync(id);
+			return Ok(tweet);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> RemoveTweet(int id)
+		{
+			var tweetId = await _tweetService.GetByIdAsync(id);
+			_tweetService.Remove(tweetId);
+			return Ok();
+		}
+
 	}
 }

@@ -12,5 +12,6 @@ namespace TwitterCloneApp.Core.Abstracts
 	{
 		Task<List<Tweet>> GetTweets();
 		Task<List<TweetResponseDto>> GetUserTweetsWithLikeCount(int id);
+		
     }
 }
