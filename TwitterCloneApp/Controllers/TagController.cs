@@ -40,7 +40,7 @@ namespace TwitterCloneApp.Controllers
             return Ok();
         }
 		
-		[HttpDelete("{id}")]
+		[HttpDelete("[action]")]
 		public async Task<IActionResult> RemoveTagAsync(int id)
 		{
 			await _tagService.RemoveTagAsync(id);

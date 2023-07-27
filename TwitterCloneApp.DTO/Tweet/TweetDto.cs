@@ -13,10 +13,10 @@ namespace TwitterCloneApp.DTO.Tweet
         public int Id { get; set; }
 		//public int UserId { get; set; }
 		public UserResponseDto User { get; set; }
-		//ReplyResponseDto will add
-		public DateTime? CreatedAt { get; set; }
 		public string? Content { get; set; }
-		public int LikeCount { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public int LikeCount { get; set; }
 		public List<TagResponseDto>? Tags { get; set; }
-	}
+        public List<ReplyResponseDto> Replies { get; set; }
+    }
 }
