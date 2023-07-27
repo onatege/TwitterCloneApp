@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitterCloneApp.DTO.Tag;
+﻿using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.DTO.Tweet

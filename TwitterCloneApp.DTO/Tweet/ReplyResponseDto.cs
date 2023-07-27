@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwitterCloneApp.DTO.Tweet
 {
-    internal class ReplyResponseDto
+    public class ReplyResponseDto
     {
     }
 }
