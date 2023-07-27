@@ -9,12 +9,12 @@ namespace TwitterCloneApp.Core.Models
 		public string Content { get; set; }
 		public User User { get; set; }
 		public bool isMainTweet { get; set; }
-		public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedAt { get; set; }
 		public DateTime? UpdatedAt { get; set; }
 		public DateTime? CreatedAt { get; set; }
         public ICollection<Tag>? Tags { get; set; } // Many-to-Many ilişkisi için koleksiyon
-		public ICollection<Tweet>? Replies { get; set; }
+		public ICollection<Reply>? Replies { get; set; }
 		public ICollection<Like>? Likes { get; set; }
     }
 }

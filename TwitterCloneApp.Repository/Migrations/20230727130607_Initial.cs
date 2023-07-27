@@ -61,18 +61,11 @@ namespace TwitterCloneApp.Repository.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TweetId = table.Column<int>(type: "int", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tweets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tweets_Tweets_TweetId",
-                        column: x => x.TweetId,
-                        principalTable: "Tweets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Tweets_Users_UserId",
                         column: x => x.UserId,
@@ -133,22 +126,28 @@ namespace TwitterCloneApp.Repository.Migrations
                 name: "Replies",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(280)", maxLength: 280, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     TweetId = table.Column<int>(type: "int", nullable: false),
-                    ReplyId = table.Column<int>(type: "int", nullable: false)
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Replies", x => new { x.TweetId, x.ReplyId });
-                    table.ForeignKey(
-                        name: "FK_Replies_Tweets_ReplyId",
-                        column: x => x.ReplyId,
-                        principalTable: "Tweets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_Replies", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Replies_Tweets_TweetId",
                         column: x => x.TweetId,
                         principalTable: "Tweets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Replies_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -199,12 +198,12 @@ namespace TwitterCloneApp.Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tweets",
-                columns: new[] { "Id", "Content", "CreatedAt", "DeletedAt", "IsDeleted", "TweetId", "UpdatedAt", "UserId", "isMainTweet" },
+                columns: new[] { "Id", "Content", "CreatedAt", "DeletedAt", "IsDeleted", "UpdatedAt", "UserId", "isMainTweet" },
                 values: new object[,]
                 {
-                    { 1, "First tweet", null, null, false, null, null, 1, true },
-                    { 2, "Second tweet", null, null, false, null, null, 1, true },
-                    { 3, "Replied test tweet", null, null, false, null, null, 2, false }
+                    { 1, "First tweet", null, null, false, null, 1, true },
+                    { 2, "Second tweet", null, null, false, null, 1, true },
+                    { 3, "Replied test tweet", null, null, false, null, 2, false }
                 });
 
             migrationBuilder.InsertData(
@@ -219,20 +218,20 @@ namespace TwitterCloneApp.Repository.Migrations
                     { 3, 1 }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Replies",
-                columns: new[] { "ReplyId", "TweetId" },
-                values: new object[] { 3, 1 });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Likes_UserId",
                 table: "Likes",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replies_ReplyId",
+                name: "IX_Replies_TweetId",
                 table: "Replies",
-                column: "ReplyId");
+                column: "TweetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Replies_UserId",
+                table: "Replies",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TagTweet_TweetsId",
@@ -240,14 +239,15 @@ namespace TwitterCloneApp.Repository.Migrations
                 column: "TweetsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tweets_TweetId",
-                table: "Tweets",
-                column: "TweetId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tweets_UserId",
                 table: "Tweets",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserName",
+                table: "Users",
+                column: "UserName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserUser_FollowingId",

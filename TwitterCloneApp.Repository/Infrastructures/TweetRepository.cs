@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
+using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.Tweet;
-using TwitterCloneApp.Repository.Migrations;
+using TwitterCloneApp.DTO.User;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {
@@ -55,7 +56,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
         }
         public async Task AddTagToTweetAsync(int tweetId, int tagId)
         {
-            var tweet = await _context.Tweets.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == tweetId);
+            var tweet = await _tweet.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == tweetId);
             var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Id == tagId);
 
             if (tweet != null && tag != null)
@@ -63,9 +64,14 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 tweet.Tags.Add(tag);
             }
         }
-        public async Task<Tweet> GetTweetWithTagsByIdAsync(int tweetId)
+        public async Task<Tweet> GetTweetByIdAsync(int tweetId)
         {
-            return await _tweet.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == tweetId);
+            return await _tweet
+                .Include(t => t.User)
+                .Include(t => t.Tags)
+                .Include(t => t.Likes)
+                .Include(t => t.Replies).ThenInclude(reply => reply.User)
+                .FirstOrDefaultAsync(t => t.Id == tweetId);
         }
     }
 }

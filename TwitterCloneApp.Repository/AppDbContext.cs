@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.Repository.Seeds;
 
 namespace TwitterCloneApp.Repository
 {
@@ -14,7 +13,7 @@ namespace TwitterCloneApp.Repository
         public DbSet<Tweet> Tweets { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Like> Likes { get; set; }
-        public DbSet<TwReply> TwReplies { get; set; }
+        public DbSet<Reply> Replies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

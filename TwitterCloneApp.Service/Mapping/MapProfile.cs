@@ -11,16 +11,16 @@ namespace TwitterCloneApp.Service.Mapping
     {
         public MapProfile()
         {
-            // User DTO mappings
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<AddUserDto, User>().ReverseMap();
             CreateMap<UpdateUserDto, User>().ReverseMap();
-            CreateMap<UserNameDto, User>().ReverseMap();
             CreateMap<DeleteDto, User>().ReverseMap();
             CreateMap<User, GetUserProfileDto> ().ReverseMap();
+            CreateMap<User, UserResponseDto> ().ReverseMap();
             CreateMap<AddTweetDto, Tweet>().ReverseMap();
             CreateMap<TweetDto, Tweet>().ReverseMap();
             CreateMap<Tweet, UpdateTweetDto>().ReverseMap();
+            CreateMap<Tweet, ReplyResponseDto>().ReverseMap();
             CreateMap<Tag, TagResponseDto>().ReverseMap();
             CreateMap<Tag, TagDto>().ReverseMap();
             CreateMap<Tag, AddTagDto>().ReverseMap();

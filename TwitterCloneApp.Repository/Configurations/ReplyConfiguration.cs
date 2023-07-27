@@ -4,12 +4,14 @@ using TwitterCloneApp.Core.Models;
 
 namespace TwitterCloneApp.Repository.Configurations
 {
-	public class TwReplyConfiguration : IEntityTypeConfiguration<TwReply>
+	public class ReplyConfiguration : IEntityTypeConfiguration<Reply>
 	{
-		public void Configure(EntityTypeBuilder<TwReply> builder)
+		public void Configure(EntityTypeBuilder<Reply> builder)
 		{
-			builder.HasKey(tw => new { tw.TweetId, tw.ReplyId });
-			builder.ToTable("Replies");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseIdentityColumn();
+            builder.Property(x => x.Content).IsRequired().HasMaxLength(280);
+            builder.ToTable("Replies");
 
             /*
             builder.HasOne(r => r.Tweet)

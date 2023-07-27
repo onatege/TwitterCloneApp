@@ -79,6 +79,43 @@ namespace TwitterCloneApp.Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TwitterCloneApp.Core.Models.Reply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(280)
+                        .HasColumnType("nvarchar(280)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TweetId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TweetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Replies", (string)null);
+                });
+
             modelBuilder.Entity("TwitterCloneApp.Core.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
@@ -116,28 +153,6 @@ namespace TwitterCloneApp.Repository.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TwitterCloneApp.Core.Models.TwReply", b =>
-                {
-                    b.Property<int>("TweetId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReplyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TweetId", "ReplyId");
-
-                    b.HasIndex("ReplyId");
-
-                    b.ToTable("Replies", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TweetId = 1,
-                            ReplyId = 3
-                        });
-                });
-
             modelBuilder.Entity("TwitterCloneApp.Core.Models.Tweet", b =>
                 {
                     b.Property<int>("Id")
@@ -160,9 +175,6 @@ namespace TwitterCloneApp.Repository.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("TweetId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -173,8 +185,6 @@ namespace TwitterCloneApp.Repository.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TweetId");
 
                     b.HasIndex("UserId");
 
@@ -342,32 +352,27 @@ namespace TwitterCloneApp.Repository.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TwitterCloneApp.Core.Models.TwReply", b =>
+            modelBuilder.Entity("TwitterCloneApp.Core.Models.Reply", b =>
                 {
-                    b.HasOne("TwitterCloneApp.Core.Models.Tweet", "Reply")
-                        .WithMany()
-                        .HasForeignKey("ReplyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TwitterCloneApp.Core.Models.Tweet", "Tweet")
-                        .WithMany()
+                        .WithMany("Replies")
                         .HasForeignKey("TweetId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Reply");
+                    b.HasOne("TwitterCloneApp.Core.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Tweet");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TwitterCloneApp.Core.Models.Tweet", b =>
                 {
-                    b.HasOne("TwitterCloneApp.Core.Models.Tweet", null)
-                        .WithMany("Replies")
-                        .HasForeignKey("TweetId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("TwitterCloneApp.Core.Models.User", "User")
                         .WithMany("Tweets")
                         .HasForeignKey("UserId")
