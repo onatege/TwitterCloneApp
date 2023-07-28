@@ -1,9 +1,9 @@
-﻿using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.User;
+﻿using TwitterCloneApp.DTO.Request.User;
+using TwitterCloneApp.DTO.Response.User;
 
 namespace TwitterCloneApp.Core.Interfaces
 {
-	public interface IUserService
+    public interface IUserService
     {
         Task AddUserAsync(AddUserDto addUserDto);
         Task<GetUserProfileDto> FindUserByIdAsync(int id);

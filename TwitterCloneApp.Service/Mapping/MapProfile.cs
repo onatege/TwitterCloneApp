@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Tag;
-using TwitterCloneApp.DTO.Tweet;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.Tag;
+using TwitterCloneApp.DTO.Request.Tweet;
+using TwitterCloneApp.DTO.Request.User;
+using TwitterCloneApp.DTO.Response.Reply;
+using TwitterCloneApp.DTO.Response.Tag;
+using TwitterCloneApp.DTO.Response.Tweet;
+using TwitterCloneApp.DTO.Response.User;
 
 namespace TwitterCloneApp.Service.Mapping
 {

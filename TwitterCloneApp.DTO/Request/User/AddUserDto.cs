@@ -1,4 +1,4 @@
-﻿namespace TwitterCloneApp.DTO
+﻿namespace TwitterCloneApp.DTO.Request.User
 {
     public class AddUserDto
     {

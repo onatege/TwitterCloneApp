@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Abstracts;
-using TwitterCloneApp.DTO.Tweet;
+using TwitterCloneApp.DTO.Request.Tweet;
 
 namespace TwitterCloneApp.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class TweetController : ControllerBase
 	{

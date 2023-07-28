@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Interfaces;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.User;
 
 namespace TwitterCloneApp.API.Controllers
 {
-	[ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {

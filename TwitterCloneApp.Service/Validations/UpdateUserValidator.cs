@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.User;
 
 namespace TwitterCloneApp.Service.Validations
 {
-	public class UpdateUserValidator : AbstractValidator<UpdateUserDto>
+    public class UpdateUserValidator : AbstractValidator<UpdateUserDto>
 	{
         public UpdateUserValidator()
         {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO.Tag;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {

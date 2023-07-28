@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using System.Runtime.CompilerServices;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Tag;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.Tag;
+using TwitterCloneApp.DTO.Response.Tag;
 
 namespace TwitterCloneApp.Service.Concrete
 {
