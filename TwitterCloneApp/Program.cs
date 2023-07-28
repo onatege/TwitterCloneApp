@@ -1,19 +1,31 @@
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
+using TwitterCloneApp.Middlewares;
 using TwitterCloneApp.Repository;
 using TwitterCloneApp.Repository.Infrastructures;
 using TwitterCloneApp.Repository.Repositories;
 using TwitterCloneApp.Service.Concrete;
 using TwitterCloneApp.Service.Mapping;
-
+using TwitterCloneApp.Service.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>()).ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true); 
+
+builder.Services.AddFluentValidation(v =>
+{
+    v.RegisterValidatorsFromAssemblyContaining<AddUserValidator>();
+    v.RegisterValidatorsFromAssemblyContaining<UpdateUserValidator>();
+    v.RegisterValidatorsFromAssemblyContaining<AddTweetValidator>();
+	
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,7 +57,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
+
+//app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
 

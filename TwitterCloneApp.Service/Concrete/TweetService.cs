@@ -12,6 +12,7 @@ using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.Tweet;
 using TwitterCloneApp.DTO.User;
 using TwitterCloneApp.Repository.Infrastructures;
+using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete
 {
