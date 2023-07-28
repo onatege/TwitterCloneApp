@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Interfaces;
-using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.User;
-using TwitterCloneApp.Service.Filters;
+using TwitterCloneApp.DTO.Request.User;
 
 namespace TwitterCloneApp.API.Controllers
 {

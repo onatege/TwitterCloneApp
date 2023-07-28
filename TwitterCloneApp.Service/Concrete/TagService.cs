@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Tag;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.Tag;
+using TwitterCloneApp.DTO.Response.Tag;
 using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete

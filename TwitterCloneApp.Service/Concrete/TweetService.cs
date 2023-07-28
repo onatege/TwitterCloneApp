@@ -6,6 +6,7 @@ using TwitterCloneApp.DTO.Response.Reply;
 using TwitterCloneApp.DTO.Response.Tag;
 using TwitterCloneApp.DTO.Response.Tweet;
 using TwitterCloneApp.DTO.Response.User;
+using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete
 {
