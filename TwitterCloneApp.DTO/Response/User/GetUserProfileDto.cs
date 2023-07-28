@@ -1,6 +1,6 @@
-﻿using TwitterCloneApp.DTO.Tweet;
+﻿using TwitterCloneApp.DTO.Response.Tweet;
 
-namespace TwitterCloneApp.DTO.User
+namespace TwitterCloneApp.DTO.Response.User
 {
     public class GetUserProfileDto
     {

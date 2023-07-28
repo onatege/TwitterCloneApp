@@ -2,13 +2,13 @@
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Request.User;
+using TwitterCloneApp.DTO.Response.User;
 using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete
 {
-	public class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;

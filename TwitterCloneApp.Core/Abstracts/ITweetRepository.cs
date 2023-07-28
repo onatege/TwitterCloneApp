@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO.Tweet;
+﻿using TwitterCloneApp.Core.Models;
+using TwitterCloneApp.DTO.Response.Tweet;
 
 namespace TwitterCloneApp.Core.Abstracts
 {
-	public interface ITweetRepository : IGenericRepository<Tweet>
+    public interface ITweetRepository : IGenericRepository<Tweet>
 	{
 		Task<List<Tweet>> GetTweets();
 		Task<List<TweetResponseDto>> GetUserTweetsWithLikeCountAsync(int id);

@@ -1,6 +1,6 @@
-﻿using TwitterCloneApp.DTO.User;
+﻿using TwitterCloneApp.DTO.Response.User;
 
-namespace TwitterCloneApp.DTO.Tweet
+namespace TwitterCloneApp.DTO.Response.Reply
 {
     public class ReplyResponseDto
     {

@@ -1,5 +1,6 @@
 ﻿using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO.Tweet;
+using TwitterCloneApp.DTO.Request.Tweet;
+using TwitterCloneApp.DTO.Response.Tweet;
 
 namespace TwitterCloneApp.Core.Abstracts
 {

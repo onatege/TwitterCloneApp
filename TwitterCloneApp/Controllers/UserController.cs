@@ -7,7 +7,7 @@ using TwitterCloneApp.Service.Filters;
 
 namespace TwitterCloneApp.API.Controllers
 {
-	[ApiController]
+    [ApiController]
     [Route("api/[controller]")]
     
     public class UserController : ControllerBase

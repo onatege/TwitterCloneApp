@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System.Runtime.CompilerServices;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;

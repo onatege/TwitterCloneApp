@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Abstracts;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
-using TwitterCloneApp.DTO;
-using TwitterCloneApp.DTO.Tag;
+using TwitterCloneApp.DTO.Request.Tag;
 
 namespace TwitterCloneApp.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class TagController : ControllerBase
 	{

@@ -1,4 +1,4 @@
-﻿namespace TwitterCloneApp.DTO.Tag
+﻿namespace TwitterCloneApp.DTO.Request.Tag
 {
     public class AddTagDto
     {

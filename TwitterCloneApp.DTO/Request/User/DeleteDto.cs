@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwitterCloneApp.DTO.User
+namespace TwitterCloneApp.DTO.Request.User
 {
     public class DeleteDto
     {

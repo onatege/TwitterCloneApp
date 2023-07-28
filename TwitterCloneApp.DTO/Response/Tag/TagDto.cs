@@ -1,6 +1,6 @@
-﻿using TwitterCloneApp.DTO.Tweet;
+﻿using TwitterCloneApp.DTO.Response.Tweet;
 
-namespace TwitterCloneApp.DTO.Tag
+namespace TwitterCloneApp.DTO.Response.Tag
 {
     public class TagDto
     {

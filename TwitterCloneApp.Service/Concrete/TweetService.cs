@@ -1,22 +1,15 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Logging.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO.Tag;
-using TwitterCloneApp.DTO.Tweet;
-using TwitterCloneApp.DTO.User;
-using TwitterCloneApp.Repository.Infrastructures;
-using TwitterCloneApp.Service.Exceptions;
+using TwitterCloneApp.DTO.Request.Tweet;
+using TwitterCloneApp.DTO.Response.Reply;
+using TwitterCloneApp.DTO.Response.Tag;
+using TwitterCloneApp.DTO.Response.Tweet;
+using TwitterCloneApp.DTO.Response.User;
 
 namespace TwitterCloneApp.Service.Concrete
 {
-	public class TweetService : Service<Tweet>, ITweetService
+    public class TweetService : Service<Tweet>, ITweetService
 	{
 		private readonly ITweetRepository _tweetRepository;
 		private readonly IUnitOfWork _unitOfWork;

@@ -1,4 +1,4 @@
-﻿namespace TwitterCloneApp.DTO.Tag
+﻿namespace TwitterCloneApp.DTO.Response.Tag
 {
     public class TagResponseDto
     {

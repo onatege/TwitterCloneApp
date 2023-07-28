@@ -1,15 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
-using TwitterCloneApp.DTO.Tag;
-using TwitterCloneApp.DTO.Tweet;
-using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.DTO.Response.Tweet;
 
 namespace TwitterCloneApp.Repository.Infrastructures
 {
