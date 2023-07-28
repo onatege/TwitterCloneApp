@@ -44,7 +44,7 @@ namespace TwitterCloneApp.Service.Concrete
 
             if (tweet == null)
             {
-                throw new ClientSideException("Tweet not found!");
+                throw new NotFoundException($"TweetId({tweetId}) not found.");
             }
 
             var tweetDto = new TweetDto
@@ -90,6 +90,10 @@ namespace TwitterCloneApp.Service.Concrete
 		public async Task RemoveTweetAsync(int id)
 		{
 			var tweet = await _tweetRepository.GetByIdAsync(id);
+            if(tweet == null)
+            {
+                throw new NotFoundException($"TweetId({id}) not found.");
+            }
 			_tweetRepository.Remove(tweet);
 			await _unitOfWork.CommitAsync();
 		}

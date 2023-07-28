@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using TwitterCloneApp.DTO.Response;
 using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Middlewares
@@ -24,32 +25,32 @@ namespace TwitterCloneApp.Middlewares
 			{
 				var response = context.Response;
 				response.ContentType = "application/json";
-				string message;
+				
 				HttpStatusCode statusCode;
 				switch (err)
 				{
-					case ClientSideException clientSideException:
+					case ClientSideException ex:
 						statusCode = HttpStatusCode.BadRequest;
-						message = clientSideException.Message;
+						
 						break;
-					case NotFoundException notFoundException:
+					case NotFoundException ex:
 						statusCode = HttpStatusCode.NotFound;
-						message = notFoundException.Message;
+						
 						break;
-					case BadRequestException badRequestException:
+					case BadRequestException ex:
 						statusCode = HttpStatusCode.BadRequest;
-						message = badRequestException.Message;
+						
 						break;
 					default:
 						statusCode = HttpStatusCode.InternalServerError;
-						message = err.Message;
 						break;
 				}
 
 				response.StatusCode = (int)statusCode;
-				
-				var result = JsonSerializer.Serialize(new {err = message});
-				await response.WriteAsync(result);
+
+				var result = CustomResponseDto.Fail(err.Message, statusCode);
+				await response.WriteAsync(JsonSerializer.Serialize(result));
+				_logger.LogError($"ERROR: {err.Message}");
 			}
 		} 
     }

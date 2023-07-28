@@ -9,6 +9,7 @@ using TwitterCloneApp.Repository;
 using TwitterCloneApp.Repository.Infrastructures;
 using TwitterCloneApp.Repository.Repositories;
 using TwitterCloneApp.Service.Concrete;
+using TwitterCloneApp.Service.Filters;
 using TwitterCloneApp.Service.Mapping;
 using TwitterCloneApp.Service.Validations;
 
@@ -40,6 +41,7 @@ builder.Services.AddScoped<ITweetService, TweetService>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
 
+
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
     x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), option =>
@@ -60,7 +62,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
 

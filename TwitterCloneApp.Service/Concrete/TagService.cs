@@ -5,6 +5,7 @@ using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;
 using TwitterCloneApp.DTO.Tag;
 using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete
 {
@@ -32,13 +33,14 @@ namespace TwitterCloneApp.Service.Concrete
         public async Task<TagDto> GetTagByIdAsync(int id)
         {
             var tag = await _tagRepository.GetTagByIdAsync(id);
-            if (tag != null)
+            if (tag == null)
             {
-                var tagDto = _mapper.Map<TagDto>(tag);
-                tagDto.Tweets = await _tweetRepository.GetTagTweetsWithLikeCountAsync(id);
-                return tagDto;
+                throw new NotFoundException($"TagId({id}) not found");
             }
-            return null;
+			var tagDto = _mapper.Map<TagDto>(tag);
+			tagDto.Tweets = await _tweetRepository.GetTagTweetsWithLikeCountAsync(id);
+			return tagDto;
+			return null;
         }
 
         public async Task AddTagAsync(AddTagDto addTagDto)

@@ -35,7 +35,7 @@ namespace TwitterCloneApp.Service.Concrete
             var user = await _userRepository.FindUserByIdAsync(id);
             if (user == null) 
             {
-                throw new ClientSideException("Error");
+                throw new NotFoundException($"UserId({id}) not found!");
             }
 			var userDto = _mapper.Map<GetUserProfileDto>(user);
 			userDto.FollowerCount = user.Followers?.Count ?? 0;
@@ -47,29 +47,24 @@ namespace TwitterCloneApp.Service.Concrete
             
 		}
 
-        //public async Task SoftDeleteUserAsync(DeleteDto deleteUserDto)
-        //{
-        //    await _userRepository.SoftDeleteUserAsync(deleteUserDto);
-        //}
-
-   
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
             var user = await _userRepository.FindUserByIdAsync(id);
-            if (user != null)
+            if (user == null)
             {
-                user.UserName = updateUserDto.UserName;
-                user.DisplayName = updateUserDto.DisplayName;
-                user.Email = updateUserDto.Email;
-                user.Biography = updateUserDto.Biography;
-                user.ProfileImg = updateUserDto.ProfileImg;
-
-                _userRepository.Update(user);
-                await _unitOfWork.CommitAsync();
-                var userDto = _mapper.Map<UpdateUserDto>(user);
-                return userDto;
+                throw new NotFoundException($"UserId({id}) not found!");
             }
-            return null;
+			user.UserName = updateUserDto.UserName;
+			user.DisplayName = updateUserDto.DisplayName;
+			user.Email = updateUserDto.Email;
+			user.Biography = updateUserDto.Biography;
+			user.ProfileImg = updateUserDto.ProfileImg;
+
+			_userRepository.Update(user);
+			await _unitOfWork.CommitAsync();
+			var userDto = _mapper.Map<UpdateUserDto>(user);
+			return userDto;
+			
         }
     }
 }

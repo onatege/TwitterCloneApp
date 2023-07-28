@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Interfaces;
+using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;
 using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.Service.Filters;
 
 namespace TwitterCloneApp.API.Controllers
 {
 	[ApiController]
     [Route("api/[controller]")]
+    
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

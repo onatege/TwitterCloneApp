@@ -1,19 +1,23 @@
 ﻿using System.Net;
+using System.Text.Json.Serialization;
 
 namespace TwitterCloneApp.DTO.Response
 {
-	public class CustomResponseDto<T>
+	public class CustomResponseDto
 	{
 		public object Data { get; set; }
-		public List<string> Error { get; set; }
+		public bool Error { get; set; }
+		public string Message { get; set; }
+		[JsonIgnore]
 		public HttpStatusCode StatusCode { get; set; }
-		public static CustomResponseDto<T> Success(T data, HttpStatusCode statusCode)
+
+		public static CustomResponseDto Success(object data, HttpStatusCode statusCode)
 		{
-			return new CustomResponseDto<T> { Data = data, StatusCode = statusCode, Error = null};
+			return new CustomResponseDto { Data = data, StatusCode = statusCode, Error = false, Message = "SUCCESS"};
 		}
-		public static CustomResponseDto<T> Fail(T data, HttpStatusCode statusCode, List<string> error)
+		public static CustomResponseDto Fail(object data, HttpStatusCode statusCode)
 		{
-			return new CustomResponseDto<T> { Data = data, StatusCode = statusCode, Error = error };
+			return new CustomResponseDto { Data = data, StatusCode = statusCode, Error = true, Message = "FAILED" };
 		}
 	}
 }
