@@ -26,25 +26,24 @@ namespace TwitterCloneApp.Middlewares
 				response.ContentType = "application/json";
 				string message;
 				HttpStatusCode statusCode;
-				if (err is ClientSideException)
+				switch (err)
 				{
-					statusCode = HttpStatusCode.BadRequest;
-					message = err.Message;
-				}
-				else if (err is NotFoundException)
-				{
-					statusCode = HttpStatusCode.NotFound;
-					message = err.Message;
-				}
-				else if (err is BadRequestException)
-				{
-					statusCode = HttpStatusCode.BadRequest;
-					message = err.Message;
-				}
-				else
-				{
-					message = err.Message;
-					statusCode = HttpStatusCode.InternalServerError;
+					case ClientSideException clientSideException:
+						statusCode = HttpStatusCode.BadRequest;
+						message = clientSideException.Message;
+						break;
+					case NotFoundException notFoundException:
+						statusCode = HttpStatusCode.NotFound;
+						message = notFoundException.Message;
+						break;
+					case BadRequestException badRequestException:
+						statusCode = HttpStatusCode.BadRequest;
+						message = badRequestException.Message;
+						break;
+					default:
+						statusCode = HttpStatusCode.InternalServerError;
+						message = err.Message;
+						break;
 				}
 
 				response.StatusCode = (int)statusCode;

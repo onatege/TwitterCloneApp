@@ -44,7 +44,7 @@ namespace TwitterCloneApp.Service.Concrete
 
             if (tweet == null)
             {
-                return null;
+                throw new ClientSideException("Tweet not found!");
             }
 
             var tweetDto = new TweetDto
