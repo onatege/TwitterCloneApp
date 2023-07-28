@@ -4,6 +4,7 @@ using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO;
 using TwitterCloneApp.DTO.User;
+using TwitterCloneApp.Service.Exceptions;
 
 namespace TwitterCloneApp.Service.Concrete
 {
@@ -32,16 +33,17 @@ namespace TwitterCloneApp.Service.Concrete
 		public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
 		{
             var user = await _userRepository.FindUserByIdAsync(id);
-            if (user != null) 
+            if (user == null) 
             {
-                var userDto = _mapper.Map<GetUserProfileDto>(user);
-                userDto.FollowerCount = user.Followers?.Count ?? 0;
-                userDto.FollowingCount = user.Following?.Count ?? 0;
-                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
-                await _unitOfWork.CommitAsync();
-                return userDto;
+                throw new ClientSideException("Error");
             }
-            return null;
+			var userDto = _mapper.Map<GetUserProfileDto>(user);
+			userDto.FollowerCount = user.Followers?.Count ?? 0;
+			userDto.FollowingCount = user.Following?.Count ?? 0;
+			userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
+			await _unitOfWork.CommitAsync();
+			return userDto;
+			
             
 		}
 

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
+using TwitterCloneApp.Middlewares;
 using TwitterCloneApp.Repository;
 using TwitterCloneApp.Repository.Infrastructures;
 using TwitterCloneApp.Repository.Repositories;
@@ -56,7 +57,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
+
+//app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
 
