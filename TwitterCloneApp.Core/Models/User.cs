@@ -12,7 +12,7 @@ namespace TwitterCloneApp.Core.Models
         public string? Biography { get; set; }
         public string? ProfileImg { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; } = true;
         public DateTime? DeletedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? CreatedAt { get; set; }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TwitterCloneApp.Core.Abstracts;
+using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Request.Tag;
+using TwitterCloneApp.DTO.Response;
 
 namespace TwitterCloneApp.Controllers
 {
@@ -16,30 +19,30 @@ namespace TwitterCloneApp.Controllers
 
 		[HttpGet]
 		public async Task<IActionResult> GetAllTagsAsync()
-		{
+        {
 			var tags = await _tagService.GetAllTagsAsync();
-			return Ok(tags);
-		}
+            return Ok(CustomResponseDto.Success(tags, HttpStatusCode.OK));
+        }
         [HttpGet("[action]")]
 		public async Task<IActionResult> GetTagByIdAsync(int id)
 		{
 			var tag = await _tagService.GetTagByIdAsync(id);
-			return Ok(tag);
-		}
+            return Ok(CustomResponseDto.Success(tag, HttpStatusCode.OK));
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> AddTagAsync(AddTagDto addTagDto)
 		{
             await _tagService.AddTagAsync(addTagDto);
-            return Ok();
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
 		
 		[HttpDelete("[action]")]
 		public async Task<IActionResult> RemoveTagAsync(int id)
 		{
 			await _tagService.RemoveTagAsync(id);
-			return Ok();
-		}
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
+        }
 		
     }
 }

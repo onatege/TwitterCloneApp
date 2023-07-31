@@ -20,7 +20,7 @@ namespace TwitterCloneApp.Repository
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);
-            modelBuilder.Entity<User>().HasQueryFilter(x => !x.IsActive);
+            modelBuilder.Entity<User>().HasQueryFilter(x => x.IsActive);
             modelBuilder.Entity<Tweet>().HasQueryFilter(x => !x.IsDeleted);
             
             var relationships = modelBuilder.Model.GetEntityTypes()

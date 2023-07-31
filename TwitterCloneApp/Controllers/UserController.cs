@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.DTO.Request.User;
+using TwitterCloneApp.DTO.Response;
 
 namespace TwitterCloneApp.API.Controllers
 {
@@ -20,21 +22,21 @@ namespace TwitterCloneApp.API.Controllers
         public async Task<IActionResult> AddUserAsync(AddUserDto addUserDto)
         {
             await _userService.AddUserAsync(addUserDto);
-            return Ok();
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
 
 		[HttpPost("[action]")]
 		public async Task<IActionResult> FindUserByIdAsync(int id)
 		{
 			var user = await _userService.FindUserByIdAsync(id);
-			return Ok(user);
-		}
+            return Ok(CustomResponseDto.Success(user, HttpStatusCode.OK));
+        }
 
 		[HttpPut("[action]")]
 		public async Task<IActionResult> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
 		{
             await _userService.UpdateUserAsync(id,updateUserDto);
-			return Ok(updateUserDto);
-		}
+            return Ok(CustomResponseDto.Success(updateUserDto, HttpStatusCode.OK));
+        }
 	}
 }
