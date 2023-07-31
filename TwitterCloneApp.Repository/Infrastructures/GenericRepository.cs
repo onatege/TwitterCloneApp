@@ -45,7 +45,8 @@ namespace TwitterCloneApp.Repository.Infrastructures
         {
             return await _dbSet.FindAsync(id);
         }
-        public async Task SoftDeleteAsync(T entity)
+
+        public void Remove(T entity)
         {
             if (entity is IDeletable softDeletable)
             {
@@ -53,11 +54,6 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 softDeletable.DeletedAt = DateTime.UtcNow;
                 _dbSet.Update(entity);
             }
-        }
-
-        public void Remove(T entity)
-        {
-            _dbSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities)

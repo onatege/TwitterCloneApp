@@ -38,5 +38,26 @@ namespace TwitterCloneApp.API.Controllers
             await _userService.UpdateUserAsync(id,updateUserDto);
             return Ok(CustomResponseDto.Success(updateUserDto, HttpStatusCode.OK));
         }
-	}
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> DeactivateUserAsync(int id)
+        {
+            await _userService.DeactivateUserAsync(id);
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> ActivateUserAsync(int id)
+        {
+            await _userService.ActivateUserAsync(id);
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> RemoveUserAsync(int id)
+        {
+            await _userService.RemoveUserAsync(id);
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
+        }
+    }
 }

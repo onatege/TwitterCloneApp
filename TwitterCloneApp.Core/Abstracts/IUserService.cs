@@ -9,5 +9,8 @@ namespace TwitterCloneApp.Core.Interfaces
         Task<GetUserProfileDto> FindUserByIdAsync(int id);
         //Task SoftDeleteUserAsync(DeleteDto deleteUserDto);
         Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto);
+        Task DeactivateUserAsync(int userId);
+        Task ActivateUserAsync(int userId);
+        Task RemoveUserAsync(int id);
     }
 }

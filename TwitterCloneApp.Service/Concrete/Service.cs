@@ -56,11 +56,6 @@ namespace TwitterCloneApp.Service.Concrete
 
 		}
 
-		public async Task SoftDeleteAsync(T entity)
-		{
-			await _repository.SoftDeleteAsync(entity);	
-		}
-
 		public async Task UpdateAsync(T entity)
 		{
 			_repository.Update(entity);

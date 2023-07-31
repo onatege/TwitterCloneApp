@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
@@ -43,8 +44,7 @@ namespace TwitterCloneApp.Service.Concrete
 			userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
 			await _unitOfWork.CommitAsync();
 			return userDto;
-			
-            
+ 
 		}
 
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
@@ -65,6 +65,43 @@ namespace TwitterCloneApp.Service.Concrete
 			var userDto = _mapper.Map<UpdateUserDto>(user);
 			return userDto;
 			
+        }
+
+        public async Task DeactivateUserAsync(int userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId); 
+            if (user != null)
+            {
+                user.IsActive = false;
+            }
+            else
+            {
+                throw new NotFoundException($"UserId({userId}) not found!");
+            }
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task ActivateUserAsync(int userId)
+        {
+            var user = await _userRepository.ActivateUserAsync(userId);
+            if (user != null)
+            {
+                user.IsActive = true;
+            }
+            else
+                throw new NotFoundException($"UserId({userId}) not found!");
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task RemoveUserAsync(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+            {
+                throw new NotFoundException($"UserId({id}) not found!");
+            }
+            _userRepository.Remove(user);
+            await _unitOfWork.CommitAsync();
         }
     }
 }
