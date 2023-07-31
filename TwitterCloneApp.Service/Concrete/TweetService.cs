@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Request.Tweet;
@@ -101,6 +102,32 @@ namespace TwitterCloneApp.Service.Concrete
                 throw new NotFoundException($"TweetId({tweetId}) or TagId({tagId}) not found.");
             }
             tweet.Tags.Add(tag);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task LikeTweetAsync(int userId, int tweetId)
+        {
+            var tweet = await _tweetRepository.GetTweetByIdAsync(tweetId);
+            if (tweet == null)
+            {
+                throw new NotFoundException($"TweetId({tweetId}) not found.");
+            }
+
+            var existingLike = tweet.Likes.FirstOrDefault(l => l.UserId == userId && l.TweetId == tweetId);
+            if (existingLike == null)
+            {
+                var newLike = new LikeTweetDto
+                {
+                    TweetId = tweetId,
+                    UserId = userId,
+                };
+                var createdLike = _mapper.Map<Like>(newLike);
+                tweet.Likes.Add(createdLike);
+            }
+            else
+            {
+                tweet.Likes.Remove(existingLike);
+            }
             await _unitOfWork.CommitAsync();
         }
     }

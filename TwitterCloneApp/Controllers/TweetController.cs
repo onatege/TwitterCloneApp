@@ -53,5 +53,12 @@ namespace TwitterCloneApp.Controllers
             return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
 
+		[HttpPut("[action]")]
+		public async Task<IActionResult> LikeTweetAsync(int userId, int tweetId)
+		{
+			await _tweetService.LikeTweetAsync(userId, tweetId);
+            return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
+        }
+
 	}
 }
