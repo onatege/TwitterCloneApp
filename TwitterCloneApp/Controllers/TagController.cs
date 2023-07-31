@@ -30,7 +30,14 @@ namespace TwitterCloneApp.Controllers
             return Ok(CustomResponseDto.Success(tag, HttpStatusCode.OK));
         }
 
-		[HttpPost]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetTrendingTagsAsync()
+        {
+            var trendingTags = await _tagService.GetTrendingTagsAsync();
+            return Ok(CustomResponseDto.Success(trendingTags, HttpStatusCode.OK));
+        }
+		
+        [HttpPost]
 		public async Task<IActionResult> AddTagAsync(AddTagDto addTagDto)
 		{
             await _tagService.AddTagAsync(addTagDto);

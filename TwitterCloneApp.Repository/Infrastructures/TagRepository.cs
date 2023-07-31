@@ -12,9 +12,9 @@ namespace TwitterCloneApp.Repository.Infrastructures
             _tag = context.Set<Tag>();
         }
 
-        public async Task<List<Tag>> GetTags()
+        public async Task<List<Tag>> GetAllTags()
         {
-            return await _tag.ToListAsync();
+            return await _tag.Include(u => u.Tweets).ToListAsync();
         }
 
         public async Task<Tag> GetTagByIdAsync(int id)

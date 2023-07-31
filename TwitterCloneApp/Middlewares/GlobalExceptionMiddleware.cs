@@ -31,14 +31,10 @@ namespace TwitterCloneApp.Middlewares
 				{
 					case ClientSideException ex:
 						statusCode = HttpStatusCode.BadRequest;
-						
+
 						break;
 					case NotFoundException ex:
 						statusCode = HttpStatusCode.NotFound;
-						
-						break;
-					case BadRequestException ex:
-						statusCode = HttpStatusCode.BadRequest;
 						
 						break;
 					default:

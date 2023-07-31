@@ -13,8 +13,8 @@ namespace TwitterCloneApp.Core.Models
         public DateTime? DeletedAt { get; set; }
 		public DateTime? UpdatedAt { get; set; }
 		public DateTime? CreatedAt { get; set; }
-        public ICollection<Tag>? Tags { get; set; } // Many-to-Many ilişkisi için koleksiyon
-		public ICollection<Reply>? Replies { get; set; }
-		public ICollection<Like>? Likes { get; set; }
+        public virtual ICollection<Tag>? Tags { get; set; } // Many-to-Many ilişkisi için koleksiyon
+		public virtual ICollection<Reply>? Replies { get; set; }
+		public virtual ICollection<Like>? Likes { get; set; }
     }
 }

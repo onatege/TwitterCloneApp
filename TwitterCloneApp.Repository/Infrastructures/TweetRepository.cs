@@ -46,24 +46,17 @@ namespace TwitterCloneApp.Repository.Infrastructures
 
             return tagTweets;
         }
-        public async Task AddTagToTweetAsync(int tweetId, int tagId)
-        {
-            var tweet = await _tweet.Include(t => t.Tags).FirstOrDefaultAsync(t => t.Id == tweetId);
-            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Id == tagId);
 
-            if (tweet != null && tag != null)
-            {
-                tweet.Tags.Add(tag);
-            }
-        }
         public async Task<Tweet> GetTweetByIdAsync(int tweetId)
         {
-            return await _tweet
+            var tweet = await _tweet
                 .Include(t => t.User)
                 .Include(t => t.Tags)
                 .Include(t => t.Likes)
                 .Include(t => t.Replies).ThenInclude(reply => reply.User)
                 .FirstOrDefaultAsync(t => t.Id == tweetId);
+
+            return tweet;
         }
     }
 }

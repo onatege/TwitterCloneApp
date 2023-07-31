@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Request.Tag;
@@ -23,7 +24,7 @@ namespace TwitterCloneApp.Service.Concrete
         }
         public async Task<List<TagDto>> GetAllTagsAsync()
         {
-            var tags = await _tagRepository.GetTags();
+            var tags = _tagRepository.GetAll();
             var tagDto = _mapper.Map<List<TagDto>>(tags);
             return tagDto;
         }
@@ -38,7 +39,22 @@ namespace TwitterCloneApp.Service.Concrete
 			var tagDto = _mapper.Map<TagDto>(tag);
 			tagDto.Tweets = await _tweetRepository.GetTagTweetsWithLikeCountAsync(id);
 			return tagDto;
-			return null;
+        }
+
+        public async Task<List<TrendingTagsResponseDto>> GetTrendingTagsAsync()
+        {
+            var last24Hours = DateTime.UtcNow.AddDays(-1);
+            var tags = await _tagRepository.GetAllTags();
+            var trendingTags = tags
+                .Where(tag => tag.Tweets != null && tag.Tweets.Count(t => t.CreatedAt >= last24Hours) >= 5)
+                .Select(tag => new TrendingTagsResponseDto
+                {
+                    Name = tag.Name,
+                    TweetCount = tag.Tweets?.Count(t => t.CreatedAt >= last24Hours) ?? 0
+                })
+                .ToList();
+
+            return trendingTags;
         }
 
         public async Task AddTagAsync(AddTagDto addTagDto)

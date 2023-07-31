@@ -12,14 +12,12 @@ namespace TwitterCloneApp.Repository.Seeds
                 new Tag
                 {
                     Id = 1,
-                    Name = "#testingSeed1",
-                    isTrending = false
+                    Name = "#testingSeed1"
                 },
                 new Tag
                 {
                     Id = 2,
-                    Name = "#testingSeed2",
-                    isTrending = true
+                    Name = "#testingSeed2"
                 }
             );
         }

@@ -94,7 +94,13 @@ namespace TwitterCloneApp.Service.Concrete
 
         public async Task AddTagToTweetAsync(int tweetId, int tagId)
         {
-            await _tweetRepository.AddTagToTweetAsync(tweetId, tagId);
+            var tweet = await _tweetRepository.GetTweetByIdAsync(tweetId);
+            var tag = await _tagRepository.GetTagByIdAsync(tagId);
+            if (tweet == null || tag == null)
+            {
+                throw new NotFoundException($"TweetId({tweetId}) or TagId({tagId}) not found.");
+            }
+            tweet.Tags.Add(tag);
             await _unitOfWork.CommitAsync();
         }
     }
