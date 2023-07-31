@@ -54,6 +54,10 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 softDeletable.DeletedAt = DateTime.UtcNow;
                 _dbSet.Update(entity);
             }
+            else 
+            { 
+                _dbSet.Remove(entity); 
+            }
         }
 
         public void RemoveRange(IEnumerable<T> entities)
