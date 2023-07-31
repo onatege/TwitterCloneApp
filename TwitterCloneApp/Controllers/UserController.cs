@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TwitterCloneApp.Core.Interfaces;
+using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Request.User;
 using TwitterCloneApp.DTO.Response;
+using TwitterCloneApp.Service.Filters;
 
 namespace TwitterCloneApp.API.Controllers
 {
@@ -24,7 +26,7 @@ namespace TwitterCloneApp.API.Controllers
             await _userService.AddUserAsync(addUserDto);
             return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
-
+        [ServiceFilter(typeof(NotFoundFilter<User>))]
 		[HttpPost("[action]")]
 		public async Task<IActionResult> FindUserByIdAsync(int id)
 		{

@@ -4,6 +4,7 @@ using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Models;
 using TwitterCloneApp.DTO.Request.Tweet;
 using TwitterCloneApp.DTO.Response;
+using TwitterCloneApp.Service.Filters;
 
 namespace TwitterCloneApp.Controllers
 {
@@ -30,6 +31,7 @@ namespace TwitterCloneApp.Controllers
 			await _tweetService.AddTweetAsync(addTweetDto);
             return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
+		[ServiceFilter(typeof(NotFoundFilter<Tweet>))]
 		[HttpGet("[action]")]
 		public async Task<IActionResult> GetTweetByIdAsync(int id)
 		{

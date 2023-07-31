@@ -38,7 +38,7 @@ namespace TwitterCloneApp.Service.Concrete
 			var tagDto = _mapper.Map<TagDto>(tag);
 			tagDto.Tweets = await _tweetRepository.GetTagTweetsWithLikeCountAsync(id);
 			return tagDto;
-			return null;
+			
         }
 
         public async Task AddTagAsync(AddTagDto addTagDto)
