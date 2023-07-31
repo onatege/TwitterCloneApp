@@ -41,6 +41,8 @@ builder.Services.AddScoped<ITweetService, TweetService>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
 
+builder.Services.AddScoped(typeof(NotFoundFilter<>));
+
 
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
