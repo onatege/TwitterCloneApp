@@ -50,6 +50,11 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name));
 });
 
+//builder.Services.AddStackExchangeRedisCache(options =>
+//{
+//	options.Configuration = Configuration["RedisCacheServerUrl"];
+//});
+
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
 var app = builder.Build();
