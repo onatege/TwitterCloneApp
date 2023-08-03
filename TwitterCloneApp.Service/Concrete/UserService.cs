@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TwitterCloneApp.Caching.Abstracts;
+using TwitterCloneApp.Caching.Keys;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
@@ -15,13 +17,15 @@ namespace TwitterCloneApp.Service.Concrete
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITweetRepository _tweetRepository;
+        private readonly ICacheService _cacheService;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork, ITweetRepository tweetRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper, IUnitOfWork unitOfWork, ITweetRepository tweetRepository, ICacheService cacheService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _tweetRepository = tweetRepository;
             _unitOfWork = unitOfWork;
+            _cacheService = cacheService;
         }
 
         public async Task AddUserAsync(AddUserDto addUserDto)
@@ -32,29 +36,47 @@ namespace TwitterCloneApp.Service.Concrete
         }
 
 		public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
-		{
+
+        {
             var user = await _userRepository.FindUserByIdAsync(id);
             if (user == null) 
             {
                 throw new NotFoundException($"UserId({id}) not found!");
             }
-			var userDto = _mapper.Map<GetUserProfileDto>(user);
-			userDto.FollowerCount = user.Followers?.Count ?? 0;
-			userDto.FollowingCount = user.Following?.Count ?? 0;
-			userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
-			await _unitOfWork.CommitAsync();
-			return userDto;
- 
-		}
+            var userDto = _mapper.Map<GetUserProfileDto>(user);
+            userDto.FollowerCount = user.Followers?.Count ?? 0;
+            userDto.FollowingCount = user.Following?.Count ?? 0;
+            userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
+            await _unitOfWork.CommitAsync();
+            return userDto;
+        }
 
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
+            string cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
+
+            if (await _cacheService.AnyAsync(cacheKey))
+            {
+                var userCache = await _cacheService.GetAsync<User>(cacheKey);
+                userCache.UserName = updateUserDto.UserName;
+                userCache.DisplayName = updateUserDto.DisplayName;
+                userCache.Email = updateUserDto.Email;
+                userCache.Biography = updateUserDto.Biography;
+                userCache.ProfileImg = updateUserDto.ProfileImg;
+
+                _userRepository.Update(userCache);
+                await _unitOfWork.CommitAsync();
+                var userExists = _mapper.Map<UpdateUserDto>(userCache);
+                return userExists;
+            }
             var user = await _userRepository.FindUserByIdAsync(id);
+
             if (user == null)
             {
                 throw new NotFoundException($"UserId({id}) not found!");
             }
-			user.UserName = updateUserDto.UserName;
+
+            user.UserName = updateUserDto.UserName;
 			user.DisplayName = updateUserDto.DisplayName;
 			user.Email = updateUserDto.Email;
 			user.Biography = updateUserDto.Biography;
@@ -62,7 +84,8 @@ namespace TwitterCloneApp.Service.Concrete
 
 			_userRepository.Update(user);
 			await _unitOfWork.CommitAsync();
-			var userDto = _mapper.Map<UpdateUserDto>(user);
+            await _cacheService.SetAsync(cacheKey, user);
+            var userDto = _mapper.Map<UpdateUserDto>(user);
 			return userDto;
 			
         }

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TwitterCloneApp.Caching\TwitterCloneApp.Caching.csproj" />
     <ProjectReference Include="..\TwitterCloneApp.Repository\TwitterCloneApp.Repository.csproj" />
   </ItemGroup>
 

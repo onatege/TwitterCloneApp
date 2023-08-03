@@ -2,6 +2,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using TwitterCloneApp.Caching.Abstracts;
+using TwitterCloneApp.Caching.Concretes;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Middlewares;
@@ -41,6 +43,8 @@ builder.Services.AddScoped<ITweetService, TweetService>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagService, TagService>();
 
+builder.Services.AddScoped<ICacheService, RedisCacheService>();
+
 builder.Services.AddScoped(typeof(NotFoundFilter<>));
 
 
@@ -50,10 +54,10 @@ builder.Services.AddDbContext<AppDbContext>(x =>
     option.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name));
 });
 
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//	options.Configuration = Configuration["RedisCacheServerUrl"];
-//});
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+	options.Configuration = "127.0.0.1:6379";
+});
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
