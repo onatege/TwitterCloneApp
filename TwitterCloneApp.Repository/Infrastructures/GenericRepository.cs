@@ -55,8 +55,8 @@ namespace TwitterCloneApp.Repository.Infrastructures
                 _dbSet.Update(entity);
             }
             else 
-            { 
-                _dbSet.Remove(entity); 
+            {
+                Task.FromResult(_dbSet.Remove(entity)); 
             }
         }
 
@@ -65,13 +65,13 @@ namespace TwitterCloneApp.Repository.Infrastructures
             _dbSet.RemoveRange(entities);
         }
 
-        public void Update(T entity)
+        public void UpdateAsync(T entity)
         {
             if (entity is IUpdatedAt updatedAtEntity)
             {
                 updatedAtEntity.UpdatedAt = DateTime.UtcNow;
             }
-            _dbSet.Update(entity);
+            Task.FromResult(_dbSet.Update(entity));
             //await _context.SaveChangesAsync();
         }
 

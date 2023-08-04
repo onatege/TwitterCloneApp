@@ -58,7 +58,7 @@ namespace TwitterCloneApp.Service.Concrete
 
 		public async Task UpdateAsync(T entity)
 		{
-			_repository.Update(entity);
+			_repository.UpdateAsync(entity);
 			await _unitOfWork.CommitAsync();
 
 		}
