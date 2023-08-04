@@ -1,0 +1,79 @@
+﻿using Microsoft.IO;
+using System.Text;
+using TwitterCloneApp.Service.Exceptions;
+
+namespace TwitterCloneApp.Middlewares
+{
+	public class RequestResponseLogMiddleware
+	{
+		private readonly RequestDelegate _next;
+		private readonly ILogger<RequestResponseLogMiddleware> _logger;
+		private readonly RecyclableMemoryStreamManager _recyclableMemoryStream;
+        public RequestResponseLogMiddleware(RequestDelegate next, ILogger<RequestResponseLogMiddleware> logger)
+        {
+			_next = next;
+			_logger = logger;
+			_recyclableMemoryStream = new RecyclableMemoryStreamManager();
+		}
+		public async Task Invoke(HttpContext context)
+		{
+			_logger.LogInformation($"Request Path: {context.Request.Path}");
+			_logger.LogInformation($"Request Method: {context.Request.Method}");
+
+			var originalRequestBody = context.Request.Body;
+			var originalResponseBody = context.Response.Body;
+
+			using (var requestBodyStream = _recyclableMemoryStream.GetStream())
+			{
+				using (var responseBodyStream = _recyclableMemoryStream.GetStream())
+				{
+					
+					try
+					{
+						context.Request.Body = requestBodyStream;
+						context.Request.EnableBuffering();
+						context.Response.Body = responseBodyStream;
+
+						await _next.Invoke(context);
+
+						await LogRequestInfoAsync(context, requestBodyStream);
+						await LogResponseInfoAsync(context, responseBodyStream, originalResponseBody);
+					}
+					catch (Exception ex)
+					{
+						throw new ClientSideException(ex.Message);
+					}
+					finally
+					{
+						context.Request.Body = originalRequestBody;
+						context.Response.Body = originalResponseBody;
+					}
+				}
+			}
+		}
+
+		private async Task LogRequestInfoAsync(HttpContext context, Stream requestBodyStream)
+		{
+			await context.Request.Body.CopyToAsync(requestBodyStream);
+			requestBodyStream.Seek(0, SeekOrigin.Begin);
+
+			var requestBodyText = await new StreamReader(requestBodyStream).ReadToEndAsync();
+			_logger.LogInformation($"Request Body: {requestBodyText}");
+
+			requestBodyStream.Seek(0, SeekOrigin.Begin);
+			context.Request.Body = requestBodyStream;
+		}
+		private async Task LogResponseInfoAsync(HttpContext context, Stream responseBodyStream, Stream originalResponseBody)
+		{
+			context.Response.Body = responseBodyStream;
+			responseBodyStream.Seek(0, SeekOrigin.Begin);
+			var responseBody = await new StreamReader(responseBodyStream, Encoding.UTF8).ReadToEndAsync();
+
+			_logger.LogInformation($"Response Body:{responseBody}");
+			_logger.LogInformation($"Response Status Code:{context.Response.StatusCode}");
+
+			responseBodyStream.Seek(0, SeekOrigin.Begin);
+			await responseBodyStream.CopyToAsync(originalResponseBody);
+		}
+	}
+}

@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using TwitterCloneApp.Caching.Abstracts;
@@ -61,6 +62,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
+Log.Logger = new LoggerConfiguration()
+			.MinimumLevel.Information()
+			.WriteTo.Console()
+			.WriteTo.File("log.txt",
+				rollingInterval: RollingInterval.Day,
+				rollOnFileSizeLimit: true)
+			.CreateLogger();
 
 var app = builder.Build();
 
@@ -73,7 +81,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<RequestResponseLogMiddleware>();
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
