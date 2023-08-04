@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using TwitterCloneApp.Caching.Abstracts;
 using TwitterCloneApp.Caching.Concretes;
@@ -56,7 +57,7 @@ builder.Services.AddDbContext<AppDbContext>(x =>
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-	options.Configuration = "127.0.0.1:6379";
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
 builder.Services.AddAutoMapper(typeof(MapProfile));

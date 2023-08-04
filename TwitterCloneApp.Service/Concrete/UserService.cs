@@ -35,21 +35,36 @@ namespace TwitterCloneApp.Service.Concrete
             await _unitOfWork.CommitAsync();
         }
 
-		public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
-
+        public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
         {
+            string cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
+            if (await _cacheService.AnyAsync(cacheKey))
+            {
+                var userCache = await _cacheService.GetAsync<User>(cacheKey);
+                var userCacheDto = _mapper.Map<GetUserProfileDto>(userCache);
+                var (followersForCached, followingForCached) = await _userRepository.GetUserFollowsByIdAsync(id);
+                userCacheDto.FollowerCount = followersForCached?.Count ?? 0;
+                userCacheDto.FollowingCount = followingForCached?.Count ?? 0;
+                userCacheDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
+                return userCacheDto;
+            }
+
             var user = await _userRepository.FindUserByIdAsync(id);
-            if (user == null) 
+            if (user == null)
             {
                 throw new NotFoundException($"UserId({id}) not found!");
             }
+            await _cacheService.SetAsync(cacheKey, user);
             var userDto = _mapper.Map<GetUserProfileDto>(user);
-            userDto.FollowerCount = user.Followers?.Count ?? 0;
-            userDto.FollowingCount = user.Following?.Count ?? 0;
+            var (followers, following) = await _userRepository.GetUserFollowsByIdAsync(id);
+            userDto.FollowerCount = followers?.Count ?? 0;
+            userDto.FollowingCount = following?.Count ?? 0;
             userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
-            await _unitOfWork.CommitAsync();
             return userDto;
         }
+
+
+
 
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
@@ -66,6 +81,7 @@ namespace TwitterCloneApp.Service.Concrete
 
                 _userRepository.Update(userCache);
                 await _unitOfWork.CommitAsync();
+                await _cacheService.SetAsync(cacheKey, userCache);
                 var userExists = _mapper.Map<UpdateUserDto>(userCache);
                 return userExists;
             }

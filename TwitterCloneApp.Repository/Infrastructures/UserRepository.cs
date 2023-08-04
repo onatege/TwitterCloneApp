@@ -22,11 +22,24 @@ namespace TwitterCloneApp.Repository.Repositories
 
         public async Task<User> FindUserByIdAsync(int id)
 		{
-            var user = await _user.Include(u => u.Followers).Include(u => u.Following).Where(u => u.Id == id).FirstOrDefaultAsync();
+            var user = await _user.Where(u => u.Id == id).FirstOrDefaultAsync();
             return user;
 		}
-        //.Include(u => u.Followers).Include(u => u.Following)
 
-		
-	}
+        public async Task<(ICollection<User> Followers, ICollection<User> Following)> GetUserFollowsByIdAsync(int userId)
+        {
+            var result = await _user
+                .Where(u => u.Id == userId)
+                .Select(u => new
+                {
+                    Followers = u.Followers,
+                    Following = u.Following
+                })
+                .FirstOrDefaultAsync();
+
+            return (result.Followers, result.Following);
+        }
+
+
+    }
 }

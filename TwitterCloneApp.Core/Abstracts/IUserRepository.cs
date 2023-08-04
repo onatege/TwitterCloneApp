@@ -7,5 +7,6 @@ namespace TwitterCloneApp.Core.Interfaces
     {
         Task<User> FindUserByIdAsync(int id);
         Task<User> ActivateUserAsync(int id);
+        Task<(ICollection<User> Followers, ICollection<User> Following)> GetUserFollowsByIdAsync(int userId);
     }
 }
