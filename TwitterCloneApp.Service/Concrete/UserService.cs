@@ -54,7 +54,7 @@ namespace TwitterCloneApp.Service.Concrete
             {
                 throw new NotFoundException($"UserId({id}) not found!");
             }
-            await _cacheService.SetAsync(cacheKey, user);
+            await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
             var userDto = _mapper.Map<GetUserProfileDto>(user);
             var (followers, following) = await _userRepository.GetUserFollowsByIdAsync(id);
             userDto.FollowerCount = followers?.Count ?? 0;
@@ -62,9 +62,6 @@ namespace TwitterCloneApp.Service.Concrete
             userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
             return userDto;
         }
-
-
-
 
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
@@ -81,7 +78,7 @@ namespace TwitterCloneApp.Service.Concrete
 
                 _userRepository.Update(userCache);
                 await _unitOfWork.CommitAsync();
-                await _cacheService.SetAsync(cacheKey, userCache);
+                await _cacheService.SetAsync(cacheKey, userCache, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
                 var userExists = _mapper.Map<UpdateUserDto>(userCache);
                 return userExists;
             }
@@ -100,7 +97,7 @@ namespace TwitterCloneApp.Service.Concrete
 
 			_userRepository.Update(user);
 			await _unitOfWork.CommitAsync();
-            await _cacheService.SetAsync(cacheKey, user);
+            await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
             var userDto = _mapper.Map<UpdateUserDto>(user);
 			return userDto;
 			

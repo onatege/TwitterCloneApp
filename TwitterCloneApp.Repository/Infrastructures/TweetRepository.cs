@@ -23,6 +23,7 @@ namespace TwitterCloneApp.Repository.Infrastructures
             var tweets = await _tweet.Where(u => u.UserId == id)
                 .Select(t => new TweetResponseDto
                 {
+                    Id = t.Id,
                     Content = t.Content,
                     CreatedAt = t.CreatedAt,
                     LikeCount = t.Likes != null ? t.Likes.Count : 0

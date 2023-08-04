@@ -25,11 +25,14 @@ namespace TwitterCloneApp.Caching.Concretes
 			return result;
 		}
 
-		public async Task SetAsync(string key, object value)
+		public async Task SetAsync(string key, object value, TimeSpan slidingExpiration, TimeSpan absoluteExpiration)
 		{
-			var serializedObject = JsonConvert.SerializeObject(value);
+            var options = new DistributedCacheEntryOptions()
+				.SetSlidingExpiration(slidingExpiration)
+				.SetAbsoluteExpiration(absoluteExpiration);
+            var serializedObject = JsonConvert.SerializeObject(value);
 			var utf8String = Encoding.UTF8.GetBytes(serializedObject);
-			await _distributedCache.SetAsync(key, utf8String);
+			await _distributedCache.SetAsync(key, utf8String, options);
 		}
 
 		public async Task RefreshAsync(string key)
