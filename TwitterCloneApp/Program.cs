@@ -16,8 +16,12 @@ using TwitterCloneApp.Service.Concrete;
 using TwitterCloneApp.Service.Filters;
 using TwitterCloneApp.Service.Mapping;
 using TwitterCloneApp.Service.Validations;
+using Microsoft.IdentityModel.Tokens;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigureLogging();
+builder.Logging.AddSerilog();
 
 // Add services to the container.
 
@@ -70,7 +74,8 @@ Log.Logger = new LoggerConfiguration()
 				rollOnFileSizeLimit: true)
 			.CreateLogger();
 
-var app = builder.Build();
+
+var app = builder.Build(); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -89,4 +94,33 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
- //username aratmadan parola kaldir
+
+void ConfigureLogging()
+{
+	var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+	var configuration = new ConfigurationBuilder()
+		.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+		.AddJsonFile(
+			$"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+			optional: true)
+		.Build();
+
+	Log.Logger = new LoggerConfiguration()
+		.Enrich.FromLogContext()
+		.Enrich.WithMachineName()
+		.WriteTo.Debug()
+		.WriteTo.Console()
+		.WriteTo.Elasticsearch(ConfigureElasticSink(configuration, environment))
+		.Enrich.WithProperty("Environment", environment)
+		.ReadFrom.Configuration(configuration)
+		.CreateLogger();
+}
+
+ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
+{
+	return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+	{
+		AutoRegisterTemplate = true,
+		IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
+	};
+}
