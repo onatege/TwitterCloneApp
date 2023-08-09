@@ -66,13 +66,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
-Log.Logger = new LoggerConfiguration()
-			.MinimumLevel.Information()
-			.WriteTo.Console()
-			.WriteTo.File("log.txt",
-				rollingInterval: RollingInterval.Day,
-				rollOnFileSizeLimit: true)
-			.CreateLogger();
 
 
 var app = builder.Build(); 
