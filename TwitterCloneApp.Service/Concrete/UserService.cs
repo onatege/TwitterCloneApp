@@ -139,8 +139,6 @@ namespace TwitterCloneApp.Service.Concrete
             }
         }
 
-
-
         public async Task RemoveUserAsync(int id)
         {
             var cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
