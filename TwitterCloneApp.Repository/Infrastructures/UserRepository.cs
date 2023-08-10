@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TwitterCloneApp.Core.Abstracts;
 using TwitterCloneApp.Core.Interfaces;
 using TwitterCloneApp.Core.Models;
@@ -14,10 +15,15 @@ namespace TwitterCloneApp.Repository.Repositories
             _user = context.Set<User>();
 		}
 
-        public async Task<User> ActivateUserAsync(int id)
+        public async Task<User> GetUserForActivationAsync(int id)
         {
             var user = await  _user.IgnoreQueryFilters().FirstOrDefaultAsync(x => x.Id == id);
             return user;
+        }
+
+        public async Task<bool> AnyDeactiveUserAsync(Expression<Func<User, bool>> expression)
+        {
+            return await _user.IgnoreQueryFilters().AnyAsync(expression);
         }
 
         public async Task<User> FindUserByIdAsync(int id)
@@ -26,18 +32,10 @@ namespace TwitterCloneApp.Repository.Repositories
             return user;
 		}
 
-        public async Task<(ICollection<User> Followers, ICollection<User> Following)> GetUserFollowsByIdAsync(int userId)
+        public async Task<User> GetUserWithFollowersByIdAsync(int userId)
         {
-            var result = await _user
-                .Where(u => u.Id == userId)
-                .Select(u => new
-                {
-                    Followers = u.Followers,
-                    Following = u.Following
-                })
-                .FirstOrDefaultAsync();
-
-            return (result.Followers, result.Following);
+            var user = await _user.Where(u => u.Id == userId).Include(u => u.Followers).Include(u => u.Following).FirstOrDefaultAsync();
+            return user;
         }
 
 

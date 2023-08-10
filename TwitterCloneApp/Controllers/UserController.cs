@@ -27,10 +27,10 @@ namespace TwitterCloneApp.API.Controllers
             return Ok(CustomResponseDto.Success(null, HttpStatusCode.OK));
         }
         [ServiceFilter(typeof(NotFoundFilter<User>))]
-		[HttpPost("[action]")]
-		public async Task<IActionResult> FindUserByIdAsync(int id)
+		[HttpGet("[action]")]
+		public async Task<IActionResult> GetUserWithFollowersAndTweetsByIdAsync(int id)
 		{
-			var user = await _userService.FindUserByIdAsync(id);
+			var user = await _userService.GetUserWithFollowersAndTweetsByIdAsync(id);
             return Ok(CustomResponseDto.Success(user, HttpStatusCode.OK));
         }
 

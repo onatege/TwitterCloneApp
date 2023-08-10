@@ -41,110 +41,102 @@ namespace TwitterCloneApp.Service.Concrete
             await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
         }
 
-        public async Task<GetUserProfileDto> FindUserByIdAsync(int id)
+        public async Task<GetUserProfileDto> GetUserWithFollowersAndTweetsByIdAsync(int id)
         {
             string cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
+            User user = null;
+
             if (await _cacheService.AnyAsync(cacheKey))
             {
-                var userCache = await _cacheService.GetAsync<User>(cacheKey);
-                var userCacheDto = _mapper.Map<GetUserProfileDto>(userCache);
-                var (followersForCached, followingForCached) = await _userRepository.GetUserFollowsByIdAsync(id);
-                userCacheDto.FollowerCount = followersForCached?.Count ?? 0;
-                userCacheDto.FollowingCount = followingForCached?.Count ?? 0;
-                userCacheDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
-                return userCacheDto;
+                user = await _cacheService.GetAsync<User>(cacheKey);
             }
             else if (await _userRepository.AnyAsync(u => u.Id == id))
             {
-                var user = await _userRepository.FindUserByIdAsync(id);
+                user = await _userRepository.GetUserWithFollowersByIdAsync(id);
                 await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
-                var userDto = _mapper.Map<GetUserProfileDto>(user);
-                var (followers, following) = await _userRepository.GetUserFollowsByIdAsync(id);
-                userDto.FollowerCount = followers?.Count ?? 0;
-                userDto.FollowingCount = following?.Count ?? 0;
-                userDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
-                return userDto;
             }
-            throw new NotFoundException($"UserId({id}) not found!");
+            else
+            {
+                throw new NotFoundException($"UserId({id}) not found!");
+            }
+            var userProfileDto = _mapper.Map<GetUserProfileDto>(user);
+            userProfileDto.Tweets = await _tweetRepository.GetUserTweetsWithLikeCountAsync(id);
+
+            return userProfileDto;
         }
+
 
         public async Task<UpdateUserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
             string cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
+            User user = null;
 
             if (await _cacheService.AnyAsync(cacheKey))
             {
-                var userCache = await _cacheService.GetAsync<User>(cacheKey);
-                userCache.UserName = updateUserDto.UserName;
-                userCache.DisplayName = updateUserDto.DisplayName;
-                userCache.Email = updateUserDto.Email;
-                userCache.Biography = updateUserDto.Biography;
-                userCache.ProfileImg = updateUserDto.ProfileImg;
-
-                _userRepository.UpdateAsync(userCache);
-                await _unitOfWork.CommitAsync();
-                await _cacheService.SetAsync(cacheKey, userCache, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
-                var cachedUser = _mapper.Map<UpdateUserDto>(userCache);
-                return cachedUser;
+                user = await _cacheService.GetAsync<User>(cacheKey);
             }
             else if (await _userRepository.AnyAsync(u => u.Id == id))
             {
-                var user = await _userRepository.FindUserByIdAsync(id);
-                user.UserName = updateUserDto.UserName;
-                user.DisplayName = updateUserDto.DisplayName;
-                user.Email = updateUserDto.Email;
-                user.Biography = updateUserDto.Biography;
-                user.ProfileImg = updateUserDto.ProfileImg;
-                _userRepository.UpdateAsync(user);
-                await _unitOfWork.CommitAsync();
-                await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
-                var userDto = _mapper.Map<UpdateUserDto>(user);
-                return userDto;
+                user = await _userRepository.FindUserByIdAsync(id);
             }
+            else
+            {
                 throw new NotFoundException($"UserId({id}) not found!");
+            }
+
+            // Use AutoMapper to update the entity
+            _mapper.Map(updateUserDto, user);
+
+            _userRepository.UpdateAsync(user);
+            await _unitOfWork.CommitAsync();
+            await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
+
+            var updatedUserDto = _mapper.Map<UpdateUserDto>(user);
+
+            return updatedUserDto;
         }
+
+
 
         public async Task DeactivateUserAsync(int userId)
         {
             string cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
+            User? user = null;
             if (await _cacheService.AnyAsync(cacheKey))
             {
-                var userCached = await _cacheService.GetAsync<User>(cacheKey);
-                userCached.IsActive = false;
-                _userRepository.UpdateAsync(userCached);
-                await _unitOfWork.CommitAsync();
+                user = await _cacheService.GetAsync<User>(cacheKey);
                 await _cacheService.RemoveAsync(cacheKey);
             }
             else if (await _userRepository.AnyAsync(u => u.Id == userId))
             {
-                var user = await _userRepository.ActivateUserAsync(userId);
-                user.IsActive = false;
-                _userRepository.UpdateAsync(user);
-                await _unitOfWork.CommitAsync();
+                user = await _userRepository.GetUserForActivationAsync(userId);
             }
+            else
+            {
                 throw new NotFoundException($"UserId({userId}) not found!");
+            }
+            var isActiveDto = new IsActiveDto { IsActive = false };
+            _mapper.Map(isActiveDto, user);
+
+            _userRepository.UpdateAsync(user);
+            await _unitOfWork.CommitAsync();
         }
 
         public async Task ActivateUserAsync(int userId)
         {
             string cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
-            if (await _cacheService.AnyAsync(cacheKey))
+            if (await _userRepository.AnyDeactiveUserAsync(u => u.Id == userId))
             {
-                var userCached = await _cacheService.GetAsync<User>(cacheKey);
-                userCached.IsActive = true;
-                _userRepository.UpdateAsync(userCached);
-                await _unitOfWork.CommitAsync();
-            }
-            else if (await _userRepository.AnyAsync(u => u.Id == userId))
-            {
-                var user = await _userRepository.ActivateUserAsync(userId);
+                var user = await _userRepository.GetUserForActivationAsync(userId);
                 user.IsActive = true;
                 _userRepository.UpdateAsync(user);
-                await _unitOfWork.CommitAsync();
                 await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
+                await _unitOfWork.CommitAsync();
             }
-            throw new NotFoundException($"UserId({userId}) not found!");
-            
+            else
+            {
+                throw new NotFoundException($"UserId({userId}) not found!");
+            }
         }
 
         public async Task RemoveUserAsync(int id)
