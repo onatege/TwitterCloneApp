@@ -128,10 +128,14 @@ namespace TwitterCloneApp.Service.Concrete
             if (await _userRepository.AnyDeactiveUserAsync(u => u.Id == userId))
             {
                 var user = await _userRepository.GetUserForActivationAsync(userId);
-                user.IsActive = true;
+
+                var isActiveDto = new IsActiveDto { IsActive = false };
+
+                _mapper.Map<IsActiveDto>(user);
+
                 _userRepository.UpdateAsync(user);
-                await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
                 await _unitOfWork.CommitAsync();
+                await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
             }
             else
             {
@@ -139,23 +143,30 @@ namespace TwitterCloneApp.Service.Concrete
             }
         }
 
+
         public async Task RemoveUserAsync(int id)
         {
             var cacheKey = string.Format(ConstantCacheKeys.UserKey, id);
-            if (await _cacheService.AnyAsync(cacheKey)) 
+            User? user = null;
+
+            if (await _cacheService.AnyAsync(cacheKey))
             {
-                var userCached = await _cacheService.GetAsync<User>(cacheKey);
+                user = await _cacheService.GetAsync<User>(cacheKey);
                 await _cacheService.RemoveAsync(cacheKey);
-                _userRepository.Remove(userCached);
-                await _unitOfWork.CommitAsync();
             }
             else if (await _userRepository.AnyAsync(u => u.Id == id))
             {
-                var user = await _userRepository.GetByIdAsync(id);
+                user = await _userRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                throw new NotFoundException($"UserId({id}) not found!");
+            }
+            if (user != null)
+            {
                 _userRepository.Remove(user);
                 await _unitOfWork.CommitAsync();
             }
-            throw new NotFoundException($"UserId({id}) not found!");
         }
     }
 }
