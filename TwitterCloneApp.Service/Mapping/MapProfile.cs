@@ -33,7 +33,6 @@ namespace TwitterCloneApp.Service.Mapping
             CreateMap<Tag, TagDto>().ReverseMap();
             CreateMap<Tag, AddTagDto>().ReverseMap();
             CreateMap<Like, LikeTweetDto>().ReverseMap();
-            CreateMap<User, IsActiveDto>().ReverseMap();
         }
     }
 }

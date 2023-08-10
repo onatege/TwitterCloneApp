@@ -96,12 +96,11 @@ namespace TwitterCloneApp.Service.Concrete
             return updatedUserDto;
         }
 
-
-
         public async Task DeactivateUserAsync(int userId)
         {
-            string cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
+            var cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
             User? user = null;
+
             if (await _cacheService.AnyAsync(cacheKey))
             {
                 user = await _cacheService.GetAsync<User>(cacheKey);
@@ -115,33 +114,31 @@ namespace TwitterCloneApp.Service.Concrete
             {
                 throw new NotFoundException($"UserId({userId}) not found!");
             }
-            var isActiveDto = new IsActiveDto { IsActive = false };
-            _mapper.Map(isActiveDto, user);
 
+            user.IsActive = false; // IsActive değerini burada güncelliyoruz
             _userRepository.UpdateAsync(user);
             await _unitOfWork.CommitAsync();
         }
 
         public async Task ActivateUserAsync(int userId)
         {
-            string cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
+            var cacheKey = string.Format(ConstantCacheKeys.UserKey, userId);
+            User? user = null;
+
             if (await _userRepository.AnyDeactiveUserAsync(u => u.Id == userId))
             {
-                var user = await _userRepository.GetUserForActivationAsync(userId);
-
-                var isActiveDto = new IsActiveDto { IsActive = false };
-
-                _mapper.Map<IsActiveDto>(user);
-
+                user = await _userRepository.GetUserForActivationAsync(userId);
+                user.IsActive = true; // IsActive değerini burada güncelliyoruz
                 _userRepository.UpdateAsync(user);
-                await _unitOfWork.CommitAsync();
                 await _cacheService.SetAsync(cacheKey, user, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(2));
+                await _unitOfWork.CommitAsync();
             }
             else
             {
                 throw new NotFoundException($"UserId({userId}) not found!");
             }
         }
+
 
 
         public async Task RemoveUserAsync(int id)
